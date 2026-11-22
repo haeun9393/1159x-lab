@@ -6,17 +6,16 @@
 <meta name="theme-color" content="#0B0819">
 <title>1159X AESTHETIC · Future Beauty Lab</title>
 <!--
-  [데모] 1159X AESTHETIC - 비더비 팝업 모바일 체험 웹
-  ▶ 제품 이미지: 이 파일 옆에 img 폴더를 만들고 아래 이름으로 배경 투명 PNG를 넣으면 자동으로 그 이미지를 씁니다.
-      img/volea.png  img/glacier-ampoule.png  img/cryo.png  img/cryo-ultra.png  img/11min.png  img/5min.png
-     (없으면 자사몰 대표 이미지 → 그것도 없으면 이름표 자리로 표시)
-  ▶ 쿠폰 배너 링크: PRODUCTS 의 coupon 값에 넣어주세요 (현재 '#')
-  오픈 전 확인 필요:
-  1) 정복, 샷 미션의 SHOT 7개 포인트 위치 = 실제 음성 안내 부위로 교체
-  2) 인체적용시험 수치/문구, '처방전' 표현 = 내부 심의 기준으로 확인
-  3) 11min / 5min 자사몰에 SOLD OUT 표시 있음 → 재고 확인
-  4) 와디즈 펀딩 종료(11/27) 이후 볼레아샷 링크를 자사몰로 교체
-  5) 주말 전문가 시연 일정 확정 후 문구 수정 (현재 '예정')
+  1159X AESTHETIC - 비더비 팝업 모바일 체험 웹
+  ▶ 설문 연결: 아래 스크립트의 CONFIG.FORM_URL 에 구글 설문 링크를 넣으면 설문 버튼들이 나타납니다.
+     비어 있으면 설문 버튼은 숨겨집니다.
+     구글 설문 '미리 채워진 링크 가져오기'로 연구원 코드/피부 MBTI/타입/추천 디바이스 칸의 entry 번호를 확인해 CONFIG.ENTRY 에 넣어 주세요.
+     설문 제출 후 확인 메시지에 https://lab.the1159.co.kr/?applied=1 링크를 넣으면 앱에 '신청 완료'와 인형뽑기 +1이 반영됩니다.
+  오픈 중 확인 필요:
+  1) SHOT 7개 포인트 위치 = 실제 음성 안내 부위
+  2) 인체적용시험 수치/문구 = 내부 심의 기준
+  3) 와디즈 펀딩 종료(11/27) 이후 볼레아샷 링크 교체
+  4) 주말 전문가 시연 일정
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +26,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg)}
 body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
 #stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .glowbg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 40% at 85% 10%,rgba(140,110,255,.22),transparent 70%),radial-gradient(50% 35% at 0% 70%,rgba(190,120,255,.14),transparent 70%)}
 .app{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:16px 20px 48px;min-height:100vh}
@@ -111,13 +111,38 @@ h3{font-size:16px;font-weight:700;margin-bottom:6px}
 .drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;aspect-ratio:9/16;max-height:460px;width:100%;border-radius:22px;border:1px dashed rgba(205,190,255,.35);color:var(--sub);font-size:14px;text-align:center;padding:24px;background:rgba(20,14,45,.4);cursor:pointer}
 .drop .ring{width:96px;height:96px;border-radius:50%;border:1px solid rgba(225,212,255,.6);box-shadow:0 0 22px rgba(160,130,255,.45);display:flex;align-items:center;justify-content:center;font-family:var(--wide);font-size:10px;letter-spacing:.2em;color:var(--acc)}
 input[type=file]{display:none}
+/* 설문 CTA */
+.formcta{display:block;text-decoration:none;color:inherit;border-radius:22px;padding:20px;border:1px solid rgba(225,212,255,.55);position:relative;overflow:hidden;
+  background:linear-gradient(140deg,rgba(185,160,255,.26),rgba(90,60,200,.18) 60%,rgba(255,150,215,.12));box-shadow:0 0 28px rgba(160,130,255,.35)}
+.formcta .b5{display:inline-block;font-size:12px;font-weight:700;color:#0B0819;background:#E9E1FF;border-radius:999px;padding:5px 11px;box-shadow:0 0 14px rgba(230,220,255,.6)}
+.formcta .ft1{font-size:18px;font-weight:700;line-height:1.42;margin-top:12px;letter-spacing:-.02em}
+.formcta .fd{font-size:13px;color:#DDD5FA;line-height:1.6;margin-top:6px}
+.formcta .fbtn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;height:52px;border-radius:999px;background:#F2EEFF;color:#1A1236;font-weight:700;font-size:15px;text-align:center;padding:0 12px;line-height:1.25}
+.formcta .fs{font-size:11px;color:var(--sub);margin-top:8px;text-align:center}
+.formcta.done{border-color:var(--line);box-shadow:none;background:var(--glass)}
+.formcta.done .ft1{font-size:16px;margin-top:0}
+.formband{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;border-radius:18px;padding:14px 16px;border:1px solid rgba(225,212,255,.45);background:rgba(170,140,255,.14)}
+.formband .b5{flex:none;font-size:11px;font-weight:700;color:#0B0819;background:#E9E1FF;border-radius:999px;padding:4px 9px}
+.formband span{flex:1;font-size:14px;font-weight:600;line-height:1.4}
+.formband i{font-style:normal;font-size:18px}
+/* 정복, 샷 */
 .stage{border-radius:22px;overflow:hidden;border:1px solid var(--line);background:rgba(20,14,45,.55);touch-action:none}
-.stage canvas{display:block;width:100%;height:320px}
+.stage canvas{display:block;width:100%;height:250px}
+.skin{margin-top:8px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:rgba(14,10,34,.7);position:relative}
+.skin canvas{display:block;width:100%;height:210px}
+.skin .cap{position:absolute;right:12px;bottom:8px;font-size:10px;color:var(--mute)}
 .steps{display:flex;gap:6px;margin-bottom:14px}
 .steps span{flex:1;text-align:center;font-family:var(--wide);font-size:10px;letter-spacing:.14em;padding:10px 0;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
 .steps span.on{border-color:rgba(225,212,255,.8);color:#fff;background:rgba(170,140,255,.22);box-shadow:0 0 14px rgba(160,130,255,.45)}
 .steps span.ok{color:var(--acc)}
-.ins{font-size:16px;line-height:1.55;font-weight:600;margin-bottom:14px;min-height:50px}
+.ins{font-size:16px;line-height:1.5;font-weight:600;margin-bottom:12px;min-height:48px}
+.fx{margin-top:8px;border-radius:18px;border:1px solid var(--line);background:var(--glass);padding:14px 16px}
+.fx .ft{font-family:var(--wide);font-size:10px;letter-spacing:.14em;color:var(--tc)}
+.fx .fd{font-size:13px;color:var(--sub);line-height:1.6;margin-top:6px}
+.fx .gl{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-top:10px}
+.fx .gl b{color:var(--ink)}
+.fx .gb{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
+.fx .gb i{display:block;height:6px;width:0;border-radius:3px;background:var(--acc);box-shadow:0 0 10px var(--acc);transition:width .15s}
 .barrow{margin-bottom:16px}
 .barrow .h{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:8px}
 .barrow .h span{font-size:12px;color:var(--sub);font-weight:500}
@@ -127,6 +152,7 @@ input[type=file]{display:none}
 .bl .tr i{display:block;height:8px;border-radius:4px;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
 .bl .v{width:60px;text-align:right;color:var(--ink);font-weight:600}
 .safe{font-size:13px;font-weight:700;color:var(--acc)}
+/* 처방전 */
 .rx{border-radius:24px;border:1px solid rgba(220,205,255,.35);overflow:hidden;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .rx .rh{padding:22px 100px 18px 22px;position:relative;background:linear-gradient(140deg,rgba(170,140,255,.35),rgba(40,26,100,.35))}
 .rx .rh .k{font-family:var(--wide);font-size:9px;letter-spacing:.24em;color:#EDE6FF}
@@ -140,28 +166,40 @@ input[type=file]{display:none}
 .rstep .i{font-family:var(--wide);font-size:11px;color:var(--tc);width:26px;flex:none;padding-top:3px}
 .rstep b{display:block;font-size:15px;margin-bottom:2px}
 .rstep span{font-size:13px;color:var(--sub);line-height:1.55}
-.coupon{display:flex;align-items:stretch;border-radius:20px;overflow:hidden;margin-top:12px;border:1px solid rgba(220,205,255,.3);text-decoration:none;color:inherit;min-height:132px;
-  background:linear-gradient(110deg,rgba(255,255,255,.07),rgba(170,140,255,.18))}
-.coupon .pi{width:118px;flex:none;background:radial-gradient(70% 70% at 50% 45%,rgba(255,255,255,.22),rgba(255,255,255,.03));display:flex;align-items:center;justify-content:center;overflow:hidden}
-.coupon .pi img{width:100%;height:132px;object-fit:contain;padding:10px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
-.coupon .ph{font-family:var(--wide);font-size:9px;letter-spacing:.06em;color:var(--acc);text-align:center;padding:8px;line-height:1.7}
-.coupon .ct{flex:1;padding:14px 14px 14px 16px;border-left:1px dashed rgba(220,205,255,.35);min-width:0;display:flex;flex-direction:column}
-.coupon .tag{font-family:var(--wide);font-size:8px;letter-spacing:.18em;color:var(--tc)}
-.coupon .nm{font-size:15px;font-weight:700;margin-top:6px;line-height:1.35}
-.coupon .ds{font-size:12px;color:var(--sub);margin-top:4px;line-height:1.45}
-.coupon .ft{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;gap:8px}
-.coupon .pr{font-size:13px;font-weight:700}
-.coupon .go{font-size:12px;font-weight:700;color:#0B0819;background:var(--acc);border-radius:999px;padding:6px 11px;white-space:nowrap}
-.plink{display:block;text-align:right;font-size:12px;color:var(--sub);margin-top:6px;text-decoration:underline;text-underline-offset:3px}
+.rec{display:flex;align-items:stretch;border-radius:20px;overflow:hidden;margin-top:10px;border:1px solid var(--line);text-decoration:none;color:inherit;min-height:118px;background:var(--glass)}
+.rec .pi{width:108px;flex:none;background:radial-gradient(70% 70% at 50% 45%,rgba(255,255,255,.2),rgba(255,255,255,.03));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.rec .pi img{width:100%;height:118px;object-fit:contain;padding:10px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+.rec .ph{font-family:var(--wide);font-size:9px;letter-spacing:.06em;color:var(--acc);text-align:center;padding:8px;line-height:1.7}
+.rec .ct{flex:1;padding:13px 14px 13px 16px;min-width:0;display:flex;flex-direction:column}
+.rec .tag{font-family:var(--wide);font-size:8px;letter-spacing:.16em;color:var(--tc)}
+.rec .nm{font-size:15px;font-weight:700;margin-top:6px;line-height:1.35}
+.rec .ds{font-size:12px;color:var(--sub);margin-top:4px;line-height:1.45}
+.rec .ft{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;gap:8px}
+.rec .cd{font-size:11px;color:#FFC9E6;font-weight:600}
+.rec .go{font-size:12px;color:var(--sub);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.special{display:block;text-decoration:none;color:inherit;margin-top:14px;border-radius:22px;padding:20px;border:1px solid rgba(255,190,225,.55);
+  background:linear-gradient(120deg,rgba(255,150,215,.22),rgba(170,140,255,.22));box-shadow:0 0 24px rgba(255,150,215,.25)}
+.special .k{font-family:var(--wide);font-size:9px;letter-spacing:.22em;color:#FFD3EC}
+.special .t{font-size:19px;font-weight:700;margin-top:8px}
+.special .d{font-size:13px;color:#EADFFF;margin-top:4px;line-height:1.5}
+.special .g{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:#1A1236;background:#FFE3F2;border-radius:999px;padding:9px 16px}
+.teaser{margin-top:10px;border-radius:20px;padding:16px;border:1px dashed rgba(225,212,255,.4);display:flex;gap:12px;align-items:center}
+.teaser .lk{width:42px;height:42px;flex:none;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--wide);font-size:9px;color:var(--acc)}
+.teaser b{display:block;font-size:15px}
+.teaser span{font-size:12px;color:var(--sub);line-height:1.5}
+/* 이벤트 */
 .ticket{border-radius:24px;overflow:hidden;border:1px solid rgba(220,205,255,.35);background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .ticket .tp{padding:24px;background:linear-gradient(140deg,rgba(170,140,255,.45),rgba(90,60,200,.35))}
 .ticket .tp .k{font-family:var(--wide);font-size:9px;letter-spacing:.24em;color:#E6DEFF}
 .ticket .tp .big{font-family:var(--wide);font-size:26px;letter-spacing:.06em;margin-top:10px;text-shadow:0 0 16px rgba(220,205,255,.7)}
 .ticket .cut{height:0;border-top:1px dashed var(--line);margin:0 18px}
 .ticket .bt{padding:18px 24px}
-.kv{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--sub)}
-.kv b{color:var(--ink);font-weight:600}
-.used{display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:#FFB4D6}
+.chances{display:flex;gap:8px;margin-top:10px}
+.chances span{flex:1;text-align:center;border-radius:14px;padding:12px 6px;border:1px solid rgba(225,212,255,.55);background:rgba(170,140,255,.18);font-size:12px;font-weight:600;line-height:1.4}
+.chances span.used{opacity:.4;text-decoration:line-through;background:none}
+.chances span.lock{border-style:dashed;background:none;color:var(--mute)}
+.kv{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--sub);gap:12px}
+.kv b{color:var(--ink);font-weight:600;text-align:right}
 .link{display:flex;justify-content:space-between;align-items:center;padding:17px 0;border-top:1px solid var(--line);font-size:15px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer}
 .link span{color:var(--mute);font-weight:500;font-size:13px}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:rgba(40,28,90,.92);border:1px solid rgba(220,205,255,.5);box-shadow:0 0 20px rgba(160,130,255,.45);color:#fff;font-size:14px;font-weight:600;padding:12px 20px;border-radius:999px;opacity:0;transition:all .3s;pointer-events:none;z-index:9;white-space:nowrap}
@@ -185,7 +223,7 @@ input[type=file]{display:none}
       <div class="bsub">FUTURE BEAUTY LAB</div>
     </div>
     <button class="btn mt32" id="startBtn"><span id="startLbl">시작하기</span><span class="arr">→</span></button>
-    <p class="note mt12 center">개인정보를 받지 않아요. 기록은 이 휴대폰에만 저장돼요.</p>
+    <p class="note mt12 center">앱에는 개인정보를 저장하지 않아요. 기록은 이 휴대폰에만 남아요.</p>
   </section>
 
   <section class="screen" id="s-story">
@@ -207,11 +245,12 @@ input[type=file]{display:none}
     <div class="stamps">
       <div class="stamp" id="stA"><b>SCAN</b>스캔</div>
       <div class="stamp" id="stB"><b>SHOT</b>정복</div>
-      <div class="stamp" id="stC"><b>EVENT</b>이벤트</div>
+      <div class="stamp" id="stC"><b>EVENT</b>인형뽑기</div>
     </div>
     <button class="lab" id="labA"><div class="ic">01</div><div class="t"><b>스킨 스캔</b><small>12단계 스캔으로 미래형 피부 타입 찾기</small></div><div class="st"></div></button>
-    <button class="lab" id="labB"><div class="ic">02</div><div class="t"><b>정복, 샷</b><small>볼레아샷 SHOT · RF · EP 3단계</small></div><div class="st"></div></button>
-    <button class="lab" id="labC"><div class="ic">03</div><div class="t"><b>이벤트 랩</b><small>다트 이벤트 참여권 받기</small></div><div class="st"></div></button>
+    <button class="lab" id="labB"><div class="ic">02</div><div class="t"><b>정복, 샷</b><small>SHOT · RF · EP가 피부 속에서 하는 일</small></div><div class="st"></div></button>
+    <button class="lab" id="labC"><div class="ic">03</div><div class="t"><b>이벤트 랩</b><small>정품 앰플 인형뽑기 참여권 받기</small></div><div class="st"></div></button>
+    <div class="formslot mt12" data-variant="band"></div>
     <div class="sect">MY ITEMS</div>
     <button class="lab" id="labID"><div class="ic">ID</div><div class="t"><b>연구원 ID 카드</b><small>저장하고 인스타 스토리에 공유</small></div><div class="st"></div></button>
     <button class="lab" id="labRX"><div class="ic">RX</div><div class="t"><b>나만의 1159X 처방전</b><small>타입별 관리 루틴과 추천 아이템</small></div><div class="st"></div></button>
@@ -240,13 +279,16 @@ input[type=file]{display:none}
         <div class="mbti" id="rvMbti"></div>
       </div>
     </div>
-    <div class="card mt24" id="rvMission" style="opacity:0;transition:opacity .6s">
-      <div class="eyebrow" style="margin-bottom:8px">Your mission</div>
-      <h3 id="rvMissionT"></h3>
-      <p class="lead" id="rvTip" style="font-size:14px"></p>
+    <div id="rvMore" style="opacity:0;transition:opacity .6s">
+      <div class="formslot mt24" data-variant="main"></div>
+      <div class="card mt12">
+        <div class="eyebrow" style="margin-bottom:8px">Your mission</div>
+        <h3 id="rvMissionT"></h3>
+        <p class="lead" id="rvTip" style="font-size:14px"></p>
+      </div>
+      <p class="note mt12">바우만 피부 타입 분류를 참고한 자가진단으로, 의학적 진단을 대신하지 않아요.</p>
+      <button class="btn mt24" id="rvGo">연구원 ID 카드 발급받기<span class="arr">→</span></button>
     </div>
-    <p class="note mt12">바우만 피부 타입 분류를 참고한 자가진단으로, 의학적 진단을 대신하지 않아요.</p>
-    <button class="btn mt24" id="rvGo">연구원 ID 카드 발급받기<span class="arr">→</span></button>
   </section>
 
   <section class="screen" id="s-id">
@@ -258,13 +300,16 @@ input[type=file]{display:none}
       <button class="btn sm ghost" id="idSave">이미지 저장</button>
       <button class="btn sm" id="idShare">스토리 공유</button>
     </div>
-    <button class="btn ghost mt8" data-go="rx">나만의 처방전 보기</button>
+    <div class="formslot mt12" data-variant="band"></div>
+    <button class="btn ghost mt12" data-go="rx">나만의 처방전 보기</button>
   </section>
 
   <section class="screen" id="s-b">
     <div class="steps"><span id="sp1">01 SHOT</span><span id="sp2">02 RF</span><span id="sp3">03 EP</span></div>
     <div class="ins" id="bIns"></div>
     <div class="stage"><canvas id="bCv"></canvas></div>
+    <div class="skin"><canvas id="sCv"></canvas><div class="cap">이해를 돕기 위한 연출 이미지</div></div>
+    <div class="fx"><div class="ft" id="fxT"></div><div class="fd" id="fxD"></div><div class="gl"><span id="fxGL"></span><b id="fxGV"></b></div><div class="gb"><i id="fxGB"></i></div></div>
     <button class="btn mt12" id="bAct">포인트를 탭하세요</button>
     <div id="bRes" style="display:none">
       <div class="card mt16">
@@ -282,7 +327,8 @@ input[type=file]{display:none}
     <div class="eyebrow">1159X care prescription</div>
     <h2>나만의 1159X 처방전</h2>
     <p class="lead">스캔 결과에 맞춘 관리 루틴과 추천 아이템이에요.</p>
-    <div class="rx mt24">
+    <div class="formslot mt16" data-variant="rx"></div>
+    <div class="rx mt16">
       <div class="rh">
         <div class="k">1159X AESTHETIC · CARE RX</div>
         <div class="n" id="rxName"></div>
@@ -295,8 +341,10 @@ input[type=file]{display:none}
         <div id="rxSteps"></div>
       </div>
     </div>
-    <div class="sect">RECOMMENDED · 연구원 전용 쿠폰</div>
-    <div id="rxCoupons"></div>
+    <div class="sect">RECOMMENDED · 이번 연구원님께 추천</div>
+    <div id="rxRecs"></div>
+    <div class="teaser"><div class="lk">LOCK</div><div><b>맞춤 화장품 추천은 리포트에서 공개</b><span>리포트를 신청하면 3영업일 안에 문자로 보내드려요.</span></div></div>
+    <a class="special" id="specialLink" target="_blank" rel="noopener"><div class="k">1159X RESEARCHER ONLY</div><div class="t">팝업 한정 시크릿 특가</div><div class="d">연구원 전용 쿠폰을 받고 특가로 만나보세요.</div><span class="g">쿠폰 받기 →</span></a>
     <button class="btn ghost mt24" data-go="hub">미션 맵으로</button>
   </section>
 
@@ -322,19 +370,21 @@ input[type=file]{display:none}
 
   <section class="screen" id="s-c">
     <div class="eyebrow">Event lab</div>
-    <h2>다트 이벤트 참여권</h2>
-    <p class="lead">C구역 직원에게 이 화면을 보여주세요.</p>
+    <h2>정품 앰플 인형뽑기 참여권</h2>
+    <p class="lead">C구역 직원에게 이 화면을 보여주세요. 뽑기 안에 정품 앰플이 들어 있고, 참여하면 샘플도 챙겨 드려요.</p>
     <div class="ticket mt24">
-      <div class="tp"><div class="k">1159X AESTHETIC · DART EVENT</div><div class="big" id="tCode"></div></div>
+      <div class="tp"><div class="k">1159X AESTHETIC · CLAW MACHINE</div><div class="big" id="tCode"></div></div>
       <div class="cut"></div>
       <div class="bt">
         <div class="kv">피부 타입<b id="tType"></b></div>
         <div class="kv">발급<b id="tTime"></b></div>
-        <div id="tUsed"></div>
+        <div class="kv">남은 찬스<b id="tLeft"></b></div>
+        <div class="chances" id="tChances"></div>
       </div>
     </div>
     <button class="btn mt24" id="staffBtn">직원 확인 (길게 누르기)</button>
-    <p class="note mt8 center">직원이 버튼을 2초간 눌러 사용 처리해요.</p>
+    <p class="note mt8 center" id="staffNote">직원이 버튼을 2초간 눌러 1회 사용 처리해요.</p>
+    <div class="formslot mt16" data-variant="c"></div>
     <button class="btn ghost mt16" data-go="hub">미션 맵으로</button>
   </section>
 
@@ -346,11 +396,14 @@ input[type=file]{display:none}
       <div class="kv">연구원 코드<b id="meCode">-</b></div>
       <div class="kv">미래형 피부 타입<b id="meType">-</b></div>
       <div class="kv">정복, 샷<b id="meB">-</b></div>
-      <div class="kv">다트 이벤트<b id="meC">-</b></div>
+      <div class="kv">리포트 신청<b id="meF">-</b></div>
+      <div class="kv">인형뽑기<b id="meC">-</b></div>
     </div>
+    <div class="formslot mt12" data-variant="me"></div>
     <div class="mt24">
       <a class="link" data-go="rx">나만의 1159X 처방전 <span>→</span></a>
       <a class="link" data-go="id">연구원 ID 카드 <span>→</span></a>
+      <a class="link" id="meSpecial" target="_blank" rel="noopener">팝업 한정 시크릿 특가 <span>쿠폰 받기</span></a>
       <a class="link" href="https://www.wadiz.io/web/campaign/detail/424419" target="_blank" rel="noopener">볼레아샷 와디즈 펀딩 <span>11/27까지</span></a>
       <div class="link" style="cursor:default">주말 전문가 시연 <span>토·일 15:00, 17:00 (예정)</span></div>
     </div>
@@ -360,55 +413,94 @@ input[type=file]{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
+/* ================= 설정 ================= */
+const CONFIG={
+  FORM_URL:'',   /* 구글 설문 링크 (예: https://docs.google.com/forms/d/e/XXXX/viewform) — 비어 있으면 설문 버튼 숨김 */
+  ENTRY:{code:'',mbti:'',type:'',device:''},   /* 미리 채울 칸의 entry 번호 (예: 'entry.123456789') */
+  SPECIAL_URL:'https://the1159.co.kr/surl/P/61'
+};
+
 const $=id=>document.getElementById(id);
 const store={get(){try{return JSON.parse(localStorage.getItem('lab1159x_v2')||'null')}catch(e){return null}},set(v){try{localStorage.setItem('lab1159x_v2',JSON.stringify(v))}catch(e){}},clear(){try{localStorage.removeItem('lab1159x_v2')}catch(e){}}};
 let S=store.get()||{};
 function save(){store.set(S)}
-function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2000)}
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2200)}
 const COORD='37.5670° N  127.0094° E';
 const PLACE='DONGDAEMUN · SEOUL';
 function hm(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 function code(){return '1159X-'+S.num}
 
+/* 예전 버전 기록 호환 */
+if(S.c&&typeof S.c==='string'&&S.cUsed==null){S.cUsed=1}
+
+/* 설문 제출 후 돌아온 경우 (?applied=1) */
+(function(){try{const u=new URL(location.href);if(u.searchParams.get('applied')==='1'){if(!S.applied){S.applied=hm();save();setTimeout(()=>toast('리포트 신청 완료 · 인형뽑기 찬스 +1'),600)}u.searchParams.delete('applied');history.replaceState(null,'',u.pathname+(u.search||'')+u.hash)}}catch(e){}})();
+
 /* ================= 데이터 ================= */
 const W1159='https://the1159.co.kr/product/';
 const PRODUCTS={
- volea:{name:'볼레아샷',sub:'니들프리 SHOT + RF + EP 3단계 홈케어 디바이스',price:'와디즈 펀딩 중',img:['img/volea.png','https://cdn-funding-public.wadiz.io/studio/images/2026/10/06/3cc7a61b-b0a9-4938-b466-3eae22296a67.jpeg'],url:'https://www.wadiz.io/web/campaign/detail/424419',coupon:'#'},
- ampoule:{name:'빙하줄렌 시너지 앰플 50ml',sub:'구아이아줄렌 기반 수분 진정 앰플, 디바이스와 함께 사용',price:'38,000원',img:['img/glacier-ampoule.png','https://ecimg.cafe24img.com/pg816b55235087014/almondco/web/product/big/20260928/369789f8f22b980d64538449978f369d.jpg'],url:W1159+'%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-%EB%B9%99%ED%95%98%EC%A4%84%EB%A0%8C-%EC%8B%9C%EB%84%88%EC%A7%80-%EC%95%B0%ED%94%8C-50ml-%EC%8B%A0%EC%A0%9C%ED%92%88/49/category/26/display/1/',coupon:'#'},
- cryo:{name:'하이퍼 쿨링 이오닉 크라이오 스틱',sub:'열감 오른 피부를 식혀주는 쿨링 이오닉 디바이스',price:'179,000원',img:['img/cryo.png'],url:W1159+'1159-%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-%ED%95%98%EC%9D%B4%ED%8D%BC-%EC%BF%A8%EB%A7%81-%EC%9D%B4%EC%98%A4%EB%8B%89-%ED%81%AC%EB%9D%BC%EC%9D%B4%EC%98%A4-%EC%8A%A4%ED%8B%B1-%EB%B7%B0%ED%8B%B0-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4/24/category/26/display/1/',coupon:'#'},
- cryoUltra:{name:'크라이오 스틱 울트라 AI',sub:'하이퍼 쿨링 이오닉 크라이오 스틱의 AI 뷰티 디바이스 신제품',price:'269,000원',img:['img/cryo-ultra.png'],url:W1159+'1159-%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-%ED%95%98%EC%9D%B4%ED%8D%BC-%EC%BF%A8%EB%A7%81-%EC%9D%B4%EC%98%A4%EB%8B%89-%ED%81%AC%EB%9D%BC%EC%9D%B4%EC%98%A4-%EC%8A%A4%ED%8B%B1-%EC%9A%B8%ED%8A%B8%EB%9D%BC-ai%EB%B7%B0%ED%8B%B0-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%8B%A0%EC%A0%9C%ED%92%88/54/category/26/display/1/',coupon:'#'},
- m11:{name:'11min 갈바닉 올인원 피부 마사지기',sub:'교체형 헤드로 클렌징부터 흡수 케어까지 올인원',price:'199,000원',img:['img/11min.png','https://ecimg.cafe24img.com/pg816b55235087014/almondco/web/product/big/20260205/737f6b0c06b0688800622a5aae3d032b.png'],url:W1159+'1159-%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-11min-%EA%B0%88%EB%B0%94%EB%8B%89-%EC%98%AC%EC%9D%B8%EC%9B%90-%ED%94%BC%EB%B6%80-%EB%A7%88%EC%82%AC%EC%A7%80%EA%B8%B0/30/category/26/display/1/',coupon:'#'},
- m5:{name:'5min 미니 갈바닉 2in1 피부 마사지기',sub:'하루 5분 갈바닉 루틴, 마스크팩 모드까지 75g 미니 스틱',price:'89,000원',img:['img/5min.png','https://ecimg.cafe24img.com/pg816b55235087014/almondco/web/product/big/20250625/49c522d6efc9743068ffeee9de1ccb27.png'],url:W1159+'1159-%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-5min-%EB%AF%B8%EB%8B%88-%EA%B0%88%EB%B0%94%EB%8B%89-2in1-%ED%94%BC%EB%B6%80-%EB%A7%88%EC%82%AC%EC%A7%80%EA%B8%B0/26/category/26/display/1/',coupon:'#'}
+ volea:{name:'볼레아샷',sub:'니들프리 SHOT + RF + EP 3단계 홈케어 디바이스',img:['img/volea.png','https://cdn-funding-public.wadiz.io/studio/images/2026/10/06/3cc7a61b-b0a9-4938-b466-3eae22296a67.jpeg'],url:'https://www.wadiz.io/web/campaign/detail/424419',cta:'와디즈 보기'},
+ ampoule:{name:'빙하줄렌 시너지 앰플 50ml',sub:'구아이아줄렌 기반 수분 진정 앰플, 디바이스와 함께 사용',img:['img/glacier-ampoule.png','https://ecimg.cafe24img.com/pg816b55235087014/almondco/web/product/big/20260928/369789f8f22b980d64538449978f369d.jpg'],url:W1159+'%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-%EB%B9%99%ED%95%98%EC%A4%84%EB%A0%8C-%EC%8B%9C%EB%84%88%EC%A7%80-%EC%95%B0%ED%94%8C-50ml-%EC%8B%A0%EC%A0%9C%ED%92%88/49/category/26/display/1/',cta:'제품 보기'},
+ cryo:{name:'하이퍼 쿨링 이오닉 크라이오 스틱',short:'이오닉 크라이오 스틱',sub:'열감 오른 피부를 식혀주는 쿨링 이오닉 디바이스',img:['img/cryo.png'],url:W1159+'1159-%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-%ED%95%98%EC%9D%B4%ED%8D%BC-%EC%BF%A8%EB%A7%81-%EC%9D%B4%EC%98%A4%EB%8B%89-%ED%81%AC%EB%9D%BC%EC%9D%B4%EC%98%A4-%EC%8A%A4%ED%8B%B1-%EB%B7%B0%ED%8B%B0-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4/24/category/26/display/1/',cta:'제품 보기',device:true},
+ cryoUltra:{name:'이오닉 크라이오 스틱 울트라',short:'크라이오 스틱 울트라',sub:'크라이오 스틱의 AI 뷰티 디바이스 신제품',img:['img/cryo-ultra.png'],url:W1159+'1159-%EC%9D%BC%EC%9D%BC%EC%98%A4%EA%B5%AC-%ED%95%98%EC%9D%B4%ED%8D%BC-%EC%BF%A8%EB%A7%81-%EC%9D%B4%EC%98%A4%EB%8B%89-%ED%81%AC%EB%9D%BC%EC%9D%B4%EC%98%A4-%EC%8A%A4%ED%8B%B1-%EC%9A%B8%ED%8A%B8%EB%9D%BC-ai%EB%B7%B0%ED%8B%B0-%EB%94%94%EB%B0%94%EC%9D%B4%EC%8A%A4-%EC%8B%A0%EC%A0%9C%ED%92%88/54/category/26/display/1/',cta:'제품 보기',device:true}
 };
-/* 미래형 피부 타입 (회사 기존 분류 '11min 1순위 그룹 / 크라이오 1순위 그룹' 기반) */
+/* 추천 디바이스 확률: 이오닉 크라이오 스틱 60% / 울트라 40% */
+const DEVICE_ODDS=[['cryo',.6],['cryoUltra',.4]];
+function pickDevice(){let r=Math.random(),acc=0;for(const [k,p] of DEVICE_ODDS){acc+=p;if(r<acc)return k}return DEVICE_ODDS[0][0]}
+function ensureDev(){if(S.a&&!S.dev){S.dev=pickDevice();save()}}
 const FT={
  LUNAR:{ko:'루나 · 달의 피부',color:'#C9C2FF',codes:['DRNW','DRNT','DRPW','ORNW','ORPW'],
   desc:'달의 뒷면처럼 고요하지만, 수분이 빠져나가며 결과 탄력이 서서히 메마르는 피부예요.',
   mission:'잃어버린 수분과 탄력을 되찾아라',
   tip:'수분을 깊이 채우고, 탄력 케어를 꾸준히 이어가는 게 이 행성의 정복법이에요.',
-  steps:[['수분 장전','세안 후 빙하줄렌 시너지 앰플로 피부에 수분을 먼저 채워요.'],['정복, 샷 (주 1회)','볼레아샷 SHOT CARE로 앰플을 정량 전달하고 RF·EP로 마무리해요.'],['흡수 마사지 (매일)','11min 갈바닉으로 바른 앰플을 따라 부드럽게 마사지해요.'],['보습 잠금','밤에는 유분감 있는 크림으로 수분을 잠가요.']],
-  prods:['volea','m11','ampoule']},
+  steps:[['수분 장전','세안 후 빙하줄렌 시너지 앰플로 피부에 수분을 먼저 채워요.'],['정복, 샷 (주 1회)','볼레아샷 SHOT CARE로 앰플을 정량 전달하고 RF·EP로 마무리해요.'],['데일리 케어','{DEV}로 매일 이어서 관리해요.'],['보습 잠금','밤에는 유분감 있는 크림으로 수분을 잠가요.']]},
  GLACIER:{ko:'글래시어 · 빙하의 피부',color:'#9FE4FF',codes:['DSNW','DSPW','OSNW','OSPW','DSNT'],
   desc:'작은 자극에도 열이 오르고 붉어지는, 섬세하고 예민한 피부예요.',
   mission:'열을 식히고 장벽을 지켜라',
   tip:'먼저 식히고 진정시킨 다음, 순하게 채우는 순서가 중요해요.',
-  steps:[['쿨다운','크라이오 스틱으로 열감 오른 부위를 차갑게 식혀요.'],['진정 장전','빙하줄렌 시너지 앰플을 얹어 진정팩처럼 사용해요.'],['정복, 샷 (주 1회)','볼레아샷은 기본 AUTO 7샷으로 부담 없이 시작해요.'],['자외선 방어','외출 전 자외선 차단제를 꼼꼼히 발라요.']],
-  prods:['volea','cryo','ampoule']},
+  steps:[['쿨다운','{DEV}로 열감 오른 부위를 차갑게 식혀요.'],['진정 장전','빙하줄렌 시너지 앰플을 얹어 진정팩처럼 사용해요.'],['정복, 샷 (주 1회)','볼레아샷은 기본 AUTO 7샷으로 부담 없이 시작해요.'],['자외선 방어','외출 전 자외선 차단제를 꼼꼼히 발라요.']]},
  SOLAR:{ko:'솔라 · 태양의 피부',color:'#FFC58F',codes:['DRPT','DSPT','ORPT','OSPT'],
   desc:'빛을 많이 받아 기미·잡티 같은 흔적이 쉽게 남는, 에너지 넘치는 피부예요.',
   mission:'칙칙함을 걷어내고 광채를 되찾아라',
   tip:'톤 케어 루틴과 자외선 차단을 함께 가져가는 게 핵심이에요.',
-  steps:[['정복, 샷 (주 1회)','볼레아샷 전용 앰플 카트리지로 SHOT · RF · EP 케어를 해요.'],['쿨링 케어','크라이오 스틱 울트라 AI로 데일리 쿨링 케어를 이어가요.'],['수분 장전','빙하줄렌 시너지 앰플로 수분을 채워요.'],['자외선 방어','흐린 날에도 자외선 차단제는 빼먹지 않아요.']],
-  prods:['volea','cryoUltra','ampoule']},
+  steps:[['정복, 샷 (주 1회)','볼레아샷 전용 앰플 카트리지로 SHOT · RF · EP 케어를 해요.'],['쿨링 케어','{DEV}로 데일리 쿨링 케어를 이어가요.'],['수분 장전','빙하줄렌 시너지 앰플로 수분을 채워요.'],['자외선 방어','흐린 날에도 자외선 차단제는 빼먹지 않아요.']]},
  NEBULA:{ko:'네뷸라 · 성운의 피부',color:'#F3A8E6',codes:['OSNT','ORNT'],
   desc:'유분과 컨디션이 성운처럼 수시로 바뀌는, 변화무쌍한 피부예요.',
   mission:'유수분 밸런스를 장악하라',
   tip:'가볍고 짧은 루틴을 꾸준히 이어가는 게 이 성운을 다스리는 법이에요.',
-  steps:[['클린 스타트','약산성 클렌저로 세안해 피부 밸런스를 맞춰요.'],['5분 루틴 (매일)','5min 미니 갈바닉으로 하루 5분 흡수 케어를 해요.'],['진정 장전','빙하줄렌 시너지 앰플로 가볍게 수분 진정해요.'],['정복, 샷 (주 1회)','볼레아샷으로 집중 케어하는 날을 정해두세요.']],
-  prods:['volea','m5','ampoule']}
+  steps:[['클린 스타트','약산성 클렌저로 세안해 피부 밸런스를 맞춰요.'],['데일리 케어','{DEV}로 가볍게 매일 관리해요.'],['진정 장전','빙하줄렌 시너지 앰플로 가볍게 수분 진정해요.'],['정복, 샷 (주 1회)','볼레아샷으로 집중 케어하는 날을 정해두세요.']]}
 };
 function ftOf(c){for(const k in FT)if(FT[k].codes.includes(c))return k;return 'NEBULA'}
 const AX={D:'건성',O:'지성',S:'민감',R:'저항',P:'색소',N:'비색소',W:'주름',T:'탄력'};
+
+/* ================= 설문 CTA ================= */
+function formURL(){
+  if(!CONFIG.FORM_URL)return '';
+  try{const u=new URL(CONFIG.FORM_URL);const E=CONFIG.ENTRY;
+    if(E.code||E.mbti||E.type||E.device)u.searchParams.set('usp','pp_url');
+    if(E.code&&S.num)u.searchParams.set(E.code,code());
+    if(E.mbti&&S.a)u.searchParams.set(E.mbti,S.a);
+    if(E.type&&S.type)u.searchParams.set(E.type,S.type);
+    if(E.device&&S.dev)u.searchParams.set(E.device,PRODUCTS[S.dev].name);
+    return u.toString()}catch(e){return CONFIG.FORM_URL}
+}
+const B5='5초 만에 입력하고';
+const CTA='한정 시크릿 혜택+이벤트 참여권 받기';
+function renderFormSlots(){
+  const url=formURL();
+  document.querySelectorAll('.formslot').forEach(el=>{
+    const v=el.dataset.variant;
+    if(!url||!S.a){el.innerHTML='';return}
+    if(S.applied){
+      el.innerHTML=(v==='band'||v==='c')?'':'<div class="formcta done"><div class="ft1">리포트 신청 완료</div><div class="fd">3영업일 안에 정밀 리포트와 시크릿 혜택을 문자로 보내드려요.</div></div>';return}
+    const T=S.type;
+    if(v==='main')el.innerHTML='<a class="formcta" href="'+url+'"><span class="b5">'+B5+'</span><div class="ft1">'+T+' 연구원님,<br>정밀 리포트가 준비됐어요</div><div class="fd">3영업일 안에 문자로 보내드려요 · 타입별 관리법 · 맞춤 디바이스·화장품 추천 · 시크릿 특가와 전용 할인 코드</div><div class="fbtn">'+CTA+' →</div><div class="fs">이름·연락처·이메일만 받아요</div></a>';
+    else if(v==='band')el.innerHTML='<a class="formband" href="'+url+'"><span class="b5">5초</span><span>'+CTA+'</span><i>→</i></a>';
+    else if(v==='rx')el.innerHTML='<a class="formband" href="'+url+'"><span class="b5">5초</span><span>이 처방전의 풀버전 리포트 + 전용 할인 코드 받기</span><i>→</i></a>';
+    else if(v==='c')el.innerHTML='<a class="formcta" href="'+url+'"><span class="b5">'+B5+'</span><div class="ft1">리포트 신청하면 인형뽑기 찬스 +1</div><div class="fd">신청을 마치고 이 화면으로 돌아오면 찬스가 하나 더 생겨요.</div><div class="fbtn">'+CTA+' →</div></a>';
+    else if(v==='me')el.innerHTML='<a class="formband" href="'+url+'"><span class="b5">5초</span><span>정밀 리포트 + '+CTA+'</span><i>→</i></a>';
+  });
+}
 
 /* ================= 별 배경 ================= */
 (function(){const c=$('stars'),x=c.getContext('2d');let W,H,st=[];
@@ -448,22 +540,25 @@ function hudCorners(c,x,y,w,h,L,col){c.strokeStyle=col;c.lineWidth=3;[[x,y,1,1],
 function sparkPath(c,cx,cy,s){c.beginPath();c.moveTo(cx,cy-s);c.bezierCurveTo(cx+s*.06,cy-s*.35,cx+s*.35,cy-s*.06,cx+s,cy);c.bezierCurveTo(cx+s*.35,cy+s*.06,cx+s*.06,cy+s*.35,cx,cy+s);c.bezierCurveTo(cx-s*.06,cy+s*.35,cx-s*.35,cy+s*.06,cx-s,cy);c.bezierCurveTo(cx-s*.35,cy-s*.06,cx-s*.06,cy-s*.35,cx,cy-s);c.closePath()}
 function txt(c,s,x,y,font,col,align,ls){c.font=font;c.fillStyle=col;c.textAlign=align||'left';try{c.letterSpacing=(ls||0)+'px'}catch(e){}c.fillText(s,x,y);try{c.letterSpacing='0px'}catch(e){}}
 let fontsReady=null;
-function loadFonts(){if(!fontsReady)fontsReady=Promise.all([document.fonts.load('40px Michroma, sans-serif'),document.fonts.load('700 40px Pretendard'),document.fonts.load('500 40px Pretendard')]).catch(()=>{});return Promise.race([fontsReady,new Promise(r=>setTimeout(r,2500))])}
+function loadFonts(){if(!fontsReady)fontsReady=Promise.all([document.fonts.load('40px Michroma'),document.fonts.load('700 40px Pretendard'),document.fonts.load('500 40px Pretendard')]).catch(()=>{});return Promise.race([fontsReady,new Promise(r=>setTimeout(r,2500))])}
 
 /* ================= 화면 전환 ================= */
 function go(name){
   if((name==='id'||name==='rx'||name==='ph')&&!S.a){toast('먼저 스킨 스캔을 완료해 주세요');name='hub'}
+  ensureDev();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   $('s-'+name).classList.add('on');
   window.scrollTo(0,0);
   if(S.type)document.documentElement.style.setProperty('--tc',FT[S.type].color);
   ({hub:renderHub,me:renderMe,c:renderTicket,id:renderID,rx:renderRX}[name]||(()=>{}))();
+  renderFormSlots();
   if(name==='b')startB();else stopB();
   if(name==='a')startScan();else stopScan();
   $('topBar').style.display=['intro','story'].includes(name)?'none':'flex';
   $('topId').textContent=S.num?code():'';
 }
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();go(g.dataset.go)}});
+$('specialLink').href=CONFIG.SPECIAL_URL;$('meSpecial').href=CONFIG.SPECIAL_URL;
 
 /* ================= 스토리 ================= */
 const STORY=[
@@ -494,14 +589,19 @@ $('stGo').onclick=()=>{if(!S.num){S.num=String(Math.floor(1000+Math.random()*900
   requestAnimationFrame(f)})(0)})();
 $('startBtn').onclick=()=>{if(S.num)go('hub');else{go('story');showStory(0)}};
 
+/* ================= 인형뽑기 찬스 ================= */
+function chancesTotal(){return 1+(S.applied?1:0)}
+function chancesLeft(){return Math.max(0,chancesTotal()-(S.cUsed||0))}
+
 /* ================= 미션 맵 ================= */
 function renderHub(){
-  $('hubTitle').textContent=S.a&&S.b?(S.c?'모든 미션을 정복했어요':'이벤트 랩이 열렸어요'):(S.a?S.type+' 연구원, 다음 미션으로':'피부 정복 미션을 시작하세요');
-  $('stA').classList.toggle('on',!!S.a);$('stB').classList.toggle('on',!!S.b);$('stC').classList.toggle('on',!!S.c);
+  const cDone=S.a&&S.b&&chancesLeft()===0;
+  $('hubTitle').textContent=S.a&&S.b?(cDone?'모든 미션을 정복했어요':'이벤트 랩이 열렸어요'):(S.a?S.type+' 연구원, 다음 미션으로':'피부 정복 미션을 시작하세요');
+  $('stA').classList.toggle('on',!!S.a);$('stB').classList.toggle('on',!!S.b);$('stC').classList.toggle('on',!!(S.cUsed));
   const set=(id,done,lock,label)=>{const el=$(id);el.classList.toggle('done',done);el.classList.toggle('lock',lock);el.querySelector('.st').textContent=label};
   set('labA',!!S.a,false,S.a?S.type:'시작');
   set('labB',!!S.b,false,S.b?'정복 완료':'시작');
-  const cOpen=!!(S.a&&S.b);set('labC',!!S.c,!cOpen,cOpen?(S.c?'완료':'열림'):'잠김');
+  const cOpen=!!(S.a&&S.b);set('labC',cDone,!cOpen,cOpen?(chancesLeft()?chancesLeft()+'회 남음':'완료'):'잠김');
   ['labID','labRX','labPH'].forEach(id=>set(id,false,!S.a,S.a?'열림':'스캔 후'));
 }
 $('labA').onclick=()=>{if(S.a)showReveal(false);else{qi=0;ans=[];renderQ();go('a')}};
@@ -549,7 +649,7 @@ function stopScan(){cancelAnimationFrame(scanRAF)}
 function finishA(){
   const pairs=[['D','O'],['S','R'],['P','N'],['W','T']];let c='';
   pairs.forEach((p,i)=>{const sl=ans.slice(i*3,i*3+3);c+=sl.filter(x=>x===p[0]).length>=2?p[0]:p[1]});
-  S.a=c;S.type=ftOf(c);save();showReveal(true);
+  S.a=c;S.type=ftOf(c);if(!S.dev)S.dev=pickDevice();save();showReveal(true);
 }
 let rvRAF=null;
 function showReveal(isNew){
@@ -558,14 +658,14 @@ function showReveal(isNew){
   $('rvMbti').innerHTML=S.a.split('').map(ch=>'<span>'+ch+'<small>'+AX[ch]+'</small></span>').join('');
   $('rvMissionT').textContent=T.mission;$('rvTip').textContent=T.tip;
   $('rvGo').innerHTML=isNew?'연구원 ID 카드 발급받기<span class="arr">→</span>':'연구원 ID 카드 보기<span class="arr">→</span>';
-  $('rvBody').style.opacity=0;$('rvMission').style.opacity=0;$('rvDetect').textContent='ANALYZING…';
+  $('rvBody').style.opacity=0;$('rvMore').style.opacity=0;$('rvDetect').textContent='ANALYZING…';
   const c=$('rvCv').getContext('2d');const t0=performance.now();cancelAnimationFrame(rvRAF);const D=isNew?1700:200;let shown=false;
   (function f(now){const t=now-t0;c.clearRect(0,0,520,520);
     if(t<D){const k=t/D;for(let i=0;i<4;i++){c.beginPath();c.arc(260,260,40+i*45+k*30,0,6.283);c.strokeStyle='rgba(200,185,255,'+(.4-i*.08)*(1-k*.5)+')';c.lineWidth=1.5;c.setLineDash([4,8]);c.lineDashOffset=-t/20*(i%2?1:-1);c.stroke()}c.setLineDash([]);
       c.beginPath();c.moveTo(260,260);c.arc(260,260,200,t/180,t/180+.6);c.closePath();c.fillStyle='rgba(200,185,255,.12)';c.fill();
       drawPlanet(c,['LUNAR','SOLAR','NEBULA','GLACIER'][Math.floor(t/140)%4],260,260,40+k*40,t)}
     else{const k=Math.min(1,(t-D)/600),e=1-Math.pow(1-k,3);drawPlanet(c,S.type,260,260,80+e*70,t);
-      if(k>=1&&!shown){shown=true;$('rvDetect').textContent='TYPE DETECTED';$('rvBody').style.opacity=1;$('rvMission').style.opacity=1;if(navigator.vibrate&&isNew)navigator.vibrate([30,40,60])}}
+      if(k>=1&&!shown){shown=true;$('rvDetect').textContent='TYPE DETECTED';$('rvBody').style.opacity=1;$('rvMore').style.opacity=1;if(navigator.vibrate&&isNew)navigator.vibrate([30,40,60])}}
     if($('s-reveal').classList.contains('on'))rvRAF=requestAnimationFrame(f)})(t0);
 }
 $('rvGo').onclick=()=>go('id');
@@ -609,17 +709,15 @@ async function shareOrSave(blob,name,shareFirst){
 $('idSave').onclick=()=>shareOrSave(idBlob,code()+'_ID.png',false);
 $('idShare').onclick=()=>shareOrSave(idBlob,code()+'_ID.png',true);
 
-/* ================= 처방전 + 쿠폰 배너 ================= */
+/* ================= 처방전 ================= */
 function imgFail(el){const list=JSON.parse(el.dataset.srcs);const i=+el.dataset.i+1;if(i<list.length){el.dataset.i=i;el.src=list[i]}else{const ph=document.createElement('div');ph.className='ph';ph.textContent=el.dataset.label;el.replaceWith(ph)}}
 function renderRX(){
-  const T=FT[S.type];$('rxName').textContent=S.type+' RX';$('rxMeta').textContent=code()+' · '+S.a+' · '+S.date;
+  const T=FT[S.type],dev=PRODUCTS[S.dev];$('rxName').textContent=S.type+' RX';$('rxMeta').textContent=code()+' · '+S.a+' · '+S.date;
   const c=$('rxCv').getContext('2d');c.clearRect(0,0,152,152);drawPlanet(c,S.type,76,76,40,800);
-  $('rxSteps').innerHTML=T.steps.map((s,i)=>'<div class="rstep"><div class="i">'+String(i+1).padStart(2,'0')+'</div><div><b>'+s[0]+'</b><span>'+s[1]+'</span></div></div>').join('');
-  $('rxCoupons').innerHTML=T.prods.map(k=>{const p=PRODUCTS[k];
-    return '<a class="coupon" href="'+p.coupon+'" data-todo="'+(p.coupon==='#'?1:0)+'"><div class="pi"><img alt="'+p.name+'" src="'+p.img[0]+'" data-srcs=\''+JSON.stringify(p.img)+'\' data-i="0" data-label="'+p.name+'" onerror="imgFail(this)"></div>'+
-    '<div class="ct"><div class="tag">'+S.type+' RESEARCHER ONLY</div><div class="nm">'+p.name+'</div><div class="ds">'+p.sub+'</div><div class="ft"><span class="pr">'+p.price+'</span><span class="go">쿠폰 받기</span></div></div></a>'+
-    '<a class="plink" href="'+p.url+'" target="_blank" rel="noopener">제품 자세히 보기 →</a>'}).join('');
-  document.querySelectorAll('.coupon[data-todo="1"]').forEach(a=>a.onclick=e=>{e.preventDefault();toast('쿠폰 링크 준비 중이에요')});
+  $('rxSteps').innerHTML=T.steps.map((s,i)=>'<div class="rstep"><div class="i">'+String(i+1).padStart(2,'0')+'</div><div><b>'+s[0]+'</b><span>'+s[1].replace('{DEV}',dev.short)+'</span></div></div>').join('');
+  $('rxRecs').innerHTML=['volea',S.dev,'ampoule'].map(k=>{const p=PRODUCTS[k];
+    return '<a class="rec" href="'+p.url+'" target="_blank" rel="noopener"><div class="pi"><img alt="'+p.name+'" src="'+p.img[0]+'" data-srcs=\''+JSON.stringify(p.img)+'\' data-i="0" data-label="'+p.name+'" onerror="imgFail(this)"></div>'+
+    '<div class="ct"><div class="tag">'+(p.device?'RECOMMENDED DEVICE':k==='volea'?'CONQUER WEAPON':'CARE AMPOULE')+'</div><div class="nm">'+p.name+'</div><div class="ds">'+p.sub+'</div><div class="ft"><span class="cd">'+(p.device?'전용 할인 코드는 문자로 보내드려요':'')+'</span><span class="go">'+p.cta+' →</span></div></div></a>'}).join('');
 }
 
 /* ================= 포토카드 ================= */
@@ -661,59 +759,144 @@ async function buildPhoto(){
 $('phSave').onclick=()=>shareOrSave(phBlob,code()+'_PHOTO.png',false);
 $('phShare').onclick=()=>shareOrSave(phBlob,code()+'_PHOTO.png',true);
 
-/* ================= 정복, 샷 : SHOT → RF → EP ================= */
-const bCv=$('bCv'),bx=bCv.getContext('2d');let BW,BH=320,bRAF=null;
-const PTS=[[-.45,-.52],[.45,-.52],[-.56,.06],[.56,.06],[-.3,.46],[.3,.46],[0,.74]]; // [확인 필요] 실제 음성 안내 부위
+/* ================= 정복, 샷 : SHOT → RF → EP (얼굴 + 피부 단면) ================= */
+/* [확인 필요] 실제 음성 안내 7부위 */
+const PTS=[
+ {p:[-.42,-.26],n:'왼쪽 눈가',m:'눈가 케어 부위에 앰플 샷'},
+ {p:[.42,-.26],n:'오른쪽 눈가',m:'눈가 케어 부위에 앰플 샷'},
+ {p:[-.26,.36],n:'왼쪽 팔자 라인',m:'팔자 라인 집중 샷'},
+ {p:[.26,.36],n:'오른쪽 팔자 라인',m:'팔자 라인 집중 샷'},
+ {p:[-.6,.04],n:'광대 톤 부위',m:'칙칙한 톤 부위에 샷'},
+ {p:[.6,.08],n:'볼',m:'건조한 볼에 수분 장전'},
+ {p:[0,.8],n:'턱선',m:'탄력 케어 라인에 샷'}
+];
+const FX={
+ 1:['01 SHOT · NEEDLE-FREE','바늘 없이 앰플을 정량으로 쏘아 피부 속으로 전달해요. 왼쪽의 바르기만 했을 때와 비교해 보세요.','앰플 정량 토출'],
+ 2:['02 RF · BIPOLAR','두 전극 사이로 고주파가 흐르며 피부를 따뜻하게 데우고, 들어간 앰플 성분을 활성화해요.','활성화'],
+ 3:['03 EP · ELECTROPORATION','전기 펄스가 피부 장벽에 일시적인 통로를 열어, 표면에 남은 앰플을 한 번 더 흡수시켜요.','표면에 남은 앰플'],
+ 4:['CONQUERED · SHOT → RF → EP','샷으로 전달하고, 고주파로 활성화하고, 전기 펄스로 한 번 더 흡수시키는 3단계 케어를 마쳤어요.','정복 완료']
+};
+const bCv=$('bCv'),bx=bCv.getContext('2d'),sCv=$('sCv'),sx=sCv.getContext('2d');let BW,BH=250,SW,SH=210,bRAF=null;
 let bs={};
-function resetB(){bs={step:1,shot:0,rf:0,ep:0,holding:false,down:false,last:null,rings:[],trail:[],t0:performance.now()};$('bRes').style.display='none';$('bAct').style.display='flex';uiB()}
-function sizeB(){const dpr=window.devicePixelRatio||1;BW=bCv.clientWidth;bCv.width=BW*dpr;bCv.height=BH*dpr;bx.setTransform(dpr,0,0,dpr,0,0)}
-function geo(){const rx=Math.min(BW*.31,118),ry=128,cx=BW/2,cy=164;return{cx,cy,rx,ry,pts:PTS.map(p=>[cx+p[0]*rx,cy+p[1]*ry])}}
+function resetB(){
+  bs={step:1,shot:0,rf:0,ep:0,holding:false,down:false,last:null,rings:[],trail:[],labels:[],t0:performance.now(),jets:[],pores:[],inP:[],surfP:[],ghost:[],absorbed:0,pulse:0};
+  const LW=SW*.3;for(let i=0;i<20;i++)bs.ghost.push({x:10+Math.random()*(LW-20),y:40+Math.random()*5,j:Math.random()*6});
+  $('bRes').style.display='none';$('bAct').style.display='flex';uiB();
+}
+function sizeB(){const d=window.devicePixelRatio||1;BW=bCv.clientWidth;bCv.width=BW*d;bCv.height=BH*d;bx.setTransform(d,0,0,d,0,0);SW=sCv.clientWidth;sCv.width=SW*d;sCv.height=SH*d;sx.setTransform(d,0,0,d,0,0)}
+function geo(){const rx=Math.min(BW*.3,104),ry=110,cx=BW/2,cy=128;return{cx,cy,rx,ry,pts:PTS.map(o=>[cx+o.p[0]*rx,cy+o.p[1]*ry])}}
+const L={surf:46,sc:62,epi:132};
 function uiB(){
   ['sp1','sp2','sp3'].forEach((id,i)=>{$(id).className=bs.step===i+1?'on':bs.step>i+1?'ok':''});
-  const a=$('bAct');
-  if(bs.step===1){$('bIns').textContent='타깃 포인트를 순서대로 탭해 앰플을 샷하세요. ('+bs.shot+'/7)';a.textContent='포인트를 탭하세요';a.setAttribute('aria-disabled','true')}
-  if(bs.step===2){$('bIns').textContent='버튼을 길게 눌러 8MHz 고주파로 앰플 성분을 활성화하세요.';a.textContent=bs.holding?'활성화 중 '+Math.round(bs.rf*100)+'%':'길게 눌러 RF 켜기';a.setAttribute('aria-disabled','false')}
-  if(bs.step===3){$('bIns').textContent='얼굴 위를 손가락으로 문질러 EP로 한 번 더 흡수시키세요. ('+Math.round(Math.min(bs.ep,1)*100)+'%)';a.textContent='얼굴을 문지르세요';a.setAttribute('aria-disabled','true')}
-  if(bs.step===4){$('bIns').textContent='정복 완료! 실제 인체적용시험에서는 이런 차이가 확인됐어요.'}
+  const a=$('bAct'),f=FX[bs.step];$('fxT').textContent=f[0];$('fxD').textContent=f[1];$('fxGL').textContent=f[2];
+  let v=0,lbl='';
+  if(bs.step===1){const t=PTS[bs.shot];$('bIns').textContent=t?'TARGET '+String(bs.shot+1).padStart(2,'0')+' · '+t.n:'';a.textContent='빛나는 포인트를 탭하세요 ('+bs.shot+'/7)';a.setAttribute('aria-disabled','true');v=bs.shot/7;lbl=(bs.shot*.07).toFixed(2)+' / 0.5cc'}
+  if(bs.step===2){$('bIns').textContent='버튼을 길게 눌러 바이폴라 RF를 켜세요';a.textContent=bs.holding?'RF 활성화 중 '+Math.round(bs.rf*100)+'%':'길게 눌러 RF 켜기';a.setAttribute('aria-disabled','false');v=bs.rf;lbl=Math.round(bs.rf*100)+'%'}
+  if(bs.step===3){$('bIns').textContent='얼굴을 손가락으로 문질러 EP 펄스를 보내세요';a.textContent='얼굴을 문지르세요';a.setAttribute('aria-disabled','true');v=1-Math.min(bs.ep,1);lbl=Math.round(v*100)+'%'}
+  if(bs.step===4){$('bIns').textContent='정복 완료! 실제 인체적용시험 결과를 확인해 보세요.';v=1;lbl='3 / 3'}
+  $('fxGB').style.width=Math.round(v*100)+'%';$('fxGV').textContent=lbl;
 }
 function pos(e){const r=bCv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
+function fireShot(i){
+  const LW=SW*.3,x=LW+((i+.5)/7)*(SW-LW-10);
+  bs.jets.push({x,t:0});
+  for(let k=0;k<12;k++){const tx=x+(Math.random()-.5)*44,ty=L.sc+6+Math.random()*(L.epi-L.sc-12);bs.inP.push({x,y:L.surf-2,tx,ty,d:120+Math.random()*260,t:0,glow:0})}
+  for(let k=0;k<4;k++)bs.surfP.push({x:x+(Math.random()-.5)*36,y:L.surf-3-Math.random()*3,gone:false,ax:0,ay:0,mv:0});
+}
 bCv.addEventListener('pointerdown',e=>{const[x,y]=pos(e);bs.down=true;bs.last=[x,y];
-  if(bs.step===1){const p=geo().pts[bs.shot];if(Math.hypot(x-p[0],y-p[1])<34){bs.rings.push({x:p[0],y:p[1],t:0});bs.shot++;if(navigator.vibrate)navigator.vibrate(30);if(bs.shot>=7)bs.step=2;uiB()}}});
+  if(bs.step===1){const p=geo().pts[bs.shot];if(Math.hypot(x-p[0],y-p[1])<34){const o=PTS[bs.shot];bs.rings.push({x:p[0],y:p[1],t:0});bs.labels=[{x:p[0],y:p[1],s:o.m+' · 0.07cc',t:0}];fireShot(bs.shot);bs.shot++;if(navigator.vibrate)navigator.vibrate(30);if(bs.shot>=7)bs.step=2;uiB()}}});
 bCv.addEventListener('pointermove',e=>{if(!bs.down||bs.step!==3)return;const[x,y]=pos(e),g=geo();
-  if(((x-g.cx)/g.rx)**2+((y-g.cy)/g.ry)**2<1.15){bs.ep+=Math.hypot(x-bs.last[0],y-bs.last[1])/1700;bs.trail.push({x,y,t:0})}
-  bs.last=[x,y];if(bs.ep>=1){bs.step=4;finishB()}uiB()});
+  if(((x-g.cx)/g.rx)**2+((y-g.cy)/g.ry)**2<1.15){const dd=Math.hypot(x-bs.last[0],y-bs.last[1]);bs.ep+=dd/1700;bs.trail.push({x,y,t:0});
+    if(Math.random()<Math.min(1,dd/14)){const LW=SW*.3;bs.pores.push({x:LW+10+Math.random()*(SW-LW-20),t:0});bs.pulse=1}}
+  bs.last=[x,y];if(bs.ep>=1){bs.ep=1;bs.step=4;finishB()}uiB()});
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>bCv.addEventListener(ev,()=>bs.down=false));
 const bAct=$('bAct');
 bAct.addEventListener('pointerdown',()=>{if(bs.step===2){bs.holding=true;uiB()}});
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>bAct.addEventListener(ev,()=>{bs.holding=false;if(bs.step===2)uiB()}));
 bAct.addEventListener('contextmenu',e=>e.preventDefault());
-function drawB(now){
-  const dt=Math.min(60,now-bs.t0);bs.t0=now;bx.clearRect(0,0,BW,BH);const g=geo();
+
+function drawFace(now,dt){
+  bx.clearRect(0,0,BW,BH);const g=geo();
   bx.strokeStyle='rgba(200,185,255,.07)';bx.lineWidth=1;
   for(let y=0;y<BH;y+=24){bx.beginPath();bx.moveTo(0,y);bx.lineTo(BW,y);bx.stroke()}
   for(let x=0;x<BW;x+=24){bx.beginPath();bx.moveTo(x,0);bx.lineTo(x,BH);bx.stroke()}
   const scan=(now/12)%(BH+60)-30;bx.fillStyle='rgba(200,180,255,.06)';bx.fillRect(0,scan,BW,26);
-  bx.save();bx.shadowColor='rgba(190,165,255,.9)';bx.shadowBlur=18;
-  bx.beginPath();bx.ellipse(g.cx,g.cy,g.rx,g.ry,0,0,Math.PI*2);bx.fillStyle='rgba(170,145,255,.08)';bx.fill();bx.strokeStyle='rgba(220,205,255,.75)';bx.lineWidth=1.4;bx.stroke();bx.restore();
-  bx.beginPath();bx.ellipse(g.cx,g.cy,g.rx+12,g.ry+12,0,0,Math.PI*2);bx.setLineDash([2,6]);bx.strokeStyle='rgba(200,185,255,.25)';bx.stroke();bx.setLineDash([]);
-  if(bs.step===2&&bs.holding){bs.rf=Math.min(1,bs.rf+dt/3000);if(navigator.vibrate&&Math.random()<.05)navigator.vibrate(10);if(bs.rf>=1){bs.step=3;bs.holding=false}uiB()}
   const glow=bs.step>=2?(bs.step===2?bs.rf:1):0;
+  bx.save();bx.shadowColor='rgba(190,165,255,.9)';bx.shadowBlur=18+glow*14;
+  bx.beginPath();bx.ellipse(g.cx,g.cy,g.rx,g.ry,0,0,Math.PI*2);bx.fillStyle='rgba(170,145,255,'+(.08+glow*.06)+')';bx.fill();bx.strokeStyle='rgba(220,205,255,.75)';bx.lineWidth=1.4;bx.stroke();bx.restore();
+  if(bs.step===2&&bs.holding){bx.beginPath();bx.ellipse(g.cx,g.cy,g.rx,g.ry,0,0,Math.PI*2);bx.fillStyle='rgba(255,170,150,'+(.06+.05*Math.sin(now/120))+')';bx.fill()}
+  bx.beginPath();bx.ellipse(g.cx,g.cy,g.rx+12,g.ry+12,0,0,Math.PI*2);bx.setLineDash([2,6]);bx.strokeStyle='rgba(200,185,255,.25)';bx.stroke();bx.setLineDash([]);
   g.pts.forEach((p,i)=>{const done=i<bs.shot,cur=bs.step===1&&i===bs.shot;
-    if(done&&glow>0){bx.beginPath();bx.arc(p[0],p[1],9+glow*14+(bs.step===2&&bs.holding?Math.sin(now/110)*3:0),0,Math.PI*2);bx.fillStyle='rgba(255,150,215,'+(.12+glow*.22)+')';bx.fill()}
-    if(cur){bx.strokeStyle='rgba(255,255,255,.55)';bx.lineWidth=1;const R=20+Math.sin(now/220)*3;bx.beginPath();bx.arc(p[0],p[1],R,0,6.283);bx.stroke();
-      [[0,-1],[0,1],[-1,0],[1,0]].forEach(([a,b])=>{bx.beginPath();bx.moveTo(p[0]+a*(R+3),p[1]+b*(R+3));bx.lineTo(p[0]+a*(R+10),p[1]+b*(R+10));bx.stroke()})}
+    if(done&&glow>0){bx.beginPath();bx.arc(p[0],p[1],8+glow*12+(bs.step===2&&bs.holding?Math.sin(now/110)*3:0),0,Math.PI*2);bx.fillStyle='rgba(255,170,150,'+(.12+glow*.22)+')';bx.fill()}
+    if(cur){bx.strokeStyle='rgba(255,255,255,.55)';bx.lineWidth=1;const R=18+Math.sin(now/220)*3;bx.beginPath();bx.arc(p[0],p[1],R,0,6.283);bx.stroke();
+      [[0,-1],[0,1],[-1,0],[1,0]].forEach(([a,b])=>{bx.beginPath();bx.moveTo(p[0]+a*(R+3),p[1]+b*(R+3));bx.lineTo(p[0]+a*(R+9),p[1]+b*(R+9));bx.stroke()})}
     bx.save();if(done||cur){bx.shadowColor='rgba(215,200,255,1)';bx.shadowBlur=14}
-    bx.beginPath();bx.arc(p[0],p[1],cur?8:6.5,0,Math.PI*2);bx.fillStyle=done?'#D6C8FF':cur?'#FFFFFF':'rgba(255,255,255,.08)';bx.fill();
-    bx.strokeStyle=done||cur?'rgba(255,255,255,.9)':'rgba(200,185,255,.4)';bx.lineWidth=1.2;bx.stroke();bx.restore();
-    if(cur){bx.fillStyle='#EDE6FF';bx.font='10px Michroma,sans-serif';bx.textAlign='center';bx.fillText('TARGET '+String(i+1).padStart(2,'0'),p[0],p[1]-36)}});
+    bx.beginPath();bx.arc(p[0],p[1],cur?7.5:6,0,Math.PI*2);bx.fillStyle=done?'#D6C8FF':cur?'#FFFFFF':'rgba(255,255,255,.08)';bx.fill();
+    bx.strokeStyle=done||cur?'rgba(255,255,255,.9)':'rgba(200,185,255,.4)';bx.lineWidth=1.2;bx.stroke();bx.restore()});
   bs.rings=bs.rings.filter(r=>r.t<650);bs.rings.forEach(r=>{r.t+=dt;bx.beginPath();bx.arc(r.x,r.y,9+r.t/18,0,Math.PI*2);bx.strokeStyle='rgba(220,205,255,'+(1-r.t/650)+')';bx.lineWidth=1.6;bx.stroke()});
   bs.trail=bs.trail.filter(s=>s.t<700);bs.trail.forEach(s=>{s.t+=dt;bx.beginPath();bx.arc(s.x,s.y,11,0,Math.PI*2);bx.fillStyle='rgba(130,215,255,'+(.3*(1-s.t/700))+')';bx.fill()});
-  if(bs.step>=3){bx.beginPath();bx.ellipse(g.cx,g.cy,g.rx,g.ry,0,0,Math.PI*2);bx.fillStyle='rgba(130,215,255,'+(Math.min(bs.ep,1)*.12)+')';bx.fill()}
+  bs.labels=bs.labels.filter(l=>l.t<1100);bs.labels.forEach(l=>{l.t+=dt;const a=l.t<800?1:1-(l.t-800)/300;bx.font='600 12px Pretendard,sans-serif';const w=bx.measureText(l.s).width+16;
+    let x=Math.min(Math.max(l.x-w/2,6),BW-w-6),y=l.y-34-l.t/40;bx.fillStyle='rgba(30,20,70,'+(.85*a)+')';bx.beginPath();bx.roundRect?bx.roundRect(x,y-15,w,22,11):bx.rect(x,y-15,w,22);bx.fill();
+    bx.fillStyle='rgba(240,235,255,'+a+')';bx.textAlign='left';bx.fillText(l.s,x+8,y)});
   bx.textAlign='left';bx.fillStyle='rgba(200,185,255,.7)';bx.font='9px Michroma,sans-serif';
-  bx.fillText('VOLÉA-SHOT · '+['','SHOT CARE','RF 8MHz','EP','CONQUERED'][bs.step],14,22);
+  bx.fillText('VOLÉA-SHOT · '+['','SHOT CARE','BIPOLAR RF','EP','CONQUERED'][bs.step],14,22);
   bx.textAlign='right';bx.fillText(S.num?code():'1159X LAB',BW-14,22);
-  bRAF=requestAnimationFrame(drawB);
 }
+function drawSkin(now,dt){
+  const c=sx,W=SW,H=SH,LW=W*.3;c.clearRect(0,0,W,H);
+  /* 층 */
+  c.fillStyle='rgba(255,215,230,.16)';c.fillRect(0,L.surf,W,L.sc-L.surf);
+  c.fillStyle='rgba(240,190,220,.10)';c.fillRect(0,L.sc,W,L.epi-L.sc);
+  c.fillStyle='rgba(200,150,210,.07)';c.fillRect(0,L.epi,W,H-L.epi);
+  for(let x=0;x<W;x+=12){c.beginPath();c.moveTo(x,L.surf);c.lineTo(x+6,L.surf+2);c.strokeStyle='rgba(255,220,240,.25)';c.lineWidth=1;c.stroke()}
+  c.strokeStyle='rgba(255,220,240,.35)';c.beginPath();c.moveTo(0,L.surf);c.lineTo(W,L.surf);c.stroke();
+  c.strokeStyle='rgba(255,220,240,.14)';c.beginPath();c.moveTo(0,L.sc);c.lineTo(W,L.sc);c.moveTo(0,L.epi);c.lineTo(W,L.epi);c.stroke();
+  for(let i=0;i<5;i++){c.beginPath();c.moveTo(LW+i*(W-LW)/5,H);c.bezierCurveTo(LW+i*(W-LW)/5+20,H-30,LW+i*(W-LW)/5-10,H-50,LW+i*(W-LW)/5+14,L.epi+6);c.strokeStyle='rgba(230,170,220,.12)';c.stroke()}
+  /* 열 (RF) */
+  const heat=bs.step>=2?(bs.step===2?bs.rf:Math.max(.35,1-(now%100000)*0)):0;
+  if(heat>0){const g=c.createLinearGradient(0,L.surf,0,L.epi+40);g.addColorStop(0,'rgba(255,150,120,'+(.05+heat*.22)+')');g.addColorStop(1,'rgba(255,150,120,0)');c.fillStyle=g;c.fillRect(LW,L.surf,W-LW,L.epi+40-L.surf)}
+  /* 라벨 */
+  c.font='600 10px Pretendard,sans-serif';c.fillStyle='rgba(230,220,255,.55)';c.textAlign='left';
+  c.fillText('각질층',6,L.sc-4);c.fillText('표피',6,L.sc+16);c.fillText('피부 속',6,L.epi+16);
+  c.setLineDash([3,5]);c.strokeStyle='rgba(200,185,255,.35)';c.beginPath();c.moveTo(LW,8);c.lineTo(LW,H-8);c.stroke();c.setLineDash([]);
+  c.font='600 10px Pretendard,sans-serif';c.fillStyle='rgba(230,220,255,.7)';c.fillText('바르기만 했을 때',6,18);
+  c.textAlign='right';c.fillStyle='rgba(230,220,255,.9)';c.fillText('볼레아샷',W-8,18);c.textAlign='left';
+  /* 바르기만: 표면에 머무는 입자 */
+  bs.ghost.forEach(p=>{c.beginPath();c.arc(p.x+Math.sin(now/700+p.j)*1.2,p.y,2.6,0,6.283);c.fillStyle='rgba(150,230,200,.55)';c.fill()});
+  /* 노즐 + 젯 */
+  bs.jets=bs.jets.filter(j=>j.t<520);bs.jets.forEach(j=>{j.t+=dt;const k=Math.min(1,j.t/180),a=j.t<300?1:1-(j.t-300)/220;
+    c.fillStyle='rgba(235,225,255,'+(.8*a)+')';c.beginPath();c.moveTo(j.x-7,22);c.lineTo(j.x+7,22);c.lineTo(j.x+2,32);c.lineTo(j.x-2,32);c.closePath();c.fill();
+    const g=c.createLinearGradient(0,32,0,32+k*(L.sc+20-32));g.addColorStop(0,'rgba(150,240,210,'+(.9*a)+')');g.addColorStop(1,'rgba(150,240,210,0)');
+    c.strokeStyle=g;c.lineWidth=3;c.beginPath();c.moveTo(j.x,32);c.lineTo(j.x,32+k*(L.sc+20-32));c.stroke();
+    if(j.t>150){c.beginPath();c.arc(j.x,L.surf,6+(j.t-150)/14,0,6.283);c.strokeStyle='rgba(180,250,225,'+(.6*a)+')';c.lineWidth=1.2;c.stroke()}});
+  /* EP 통로 + 펄스 */
+  bs.pulse*=.9;if(bs.pulse>.02){c.fillStyle='rgba(140,210,255,'+(bs.pulse*.25)+')';c.fillRect(LW,L.surf-2,W-LW,L.sc-L.surf+4)}
+  bs.pores=bs.pores.filter(p=>p.t<600);bs.pores.forEach(p=>{p.t+=dt;const o=Math.sin(Math.min(1,p.t/600)*Math.PI);
+    c.fillStyle='rgba(14,10,34,'+(.9*o)+')';c.beginPath();c.ellipse(p.x,(L.surf+L.sc)/2,2+4*o,(L.sc-L.surf)/2+1,0,0,6.283);c.fill();
+    c.strokeStyle='rgba(140,210,255,'+(.8*o)+')';c.lineWidth=1;c.stroke()});
+  /* EP 진행에 맞춰 표면 입자 흡수 */
+  if(bs.step>=3){const need=Math.floor(Math.min(1,bs.ep)*bs.surfP.length);let have=bs.surfP.filter(p=>p.mv).length;
+    for(const p of bs.surfP){if(have>=need)break;if(!p.mv){p.mv=1;p.tx=p.x+(Math.random()-.5)*10;p.ty=L.sc+8+Math.random()*(L.epi-L.sc-16);p.t=0;have++;bs.pores.push({x:p.x,t:0})}}}
+  /* 표면에 남은 입자 */
+  bs.surfP.forEach(p=>{if(p.mv){p.t=(p.t||0)+dt;const k=Math.min(1,p.t/700),e=1-Math.pow(1-k,3);p.cx=p.x+(p.tx-p.x)*e;p.cy=p.y+(p.ty-p.y)*e}else{p.cx=p.x;p.cy=p.y}
+    const warm=heat;c.beginPath();c.arc(p.cx,p.cy,2.6,0,6.283);c.fillStyle=p.mv&&p.t>700?'rgba(255,240,200,.95)':'rgba(150,240,210,.85)';c.fill()});
+  /* 들어간 입자 */
+  bs.inP.forEach(p=>{p.t+=dt;const k=Math.min(1,p.t/p.d/2.2),e=1-Math.pow(1-k,3);const x=p.x+(p.tx-p.x)*e,y=p.y+(p.ty-p.y)*e+Math.sin(now/600+p.tx)*.6;
+    const act=bs.step>=2?(bs.step===2?bs.rf:1):0;
+    c.save();if(act>0){c.shadowColor='rgba(255,230,190,'+act+')';c.shadowBlur=8*act}
+    c.beginPath();c.arc(x,y,2.4+act*.8,0,6.283);
+    c.fillStyle=act>0?'rgba('+Math.round(150+105*act)+','+Math.round(240-10*act)+','+Math.round(210-30*act)+',.95)':'rgba(150,240,210,.9)';c.fill();c.restore()});
+  /* RF 전극 + 아크 */
+  if(bs.step===2||(bs.step>2&&bs.step<4&&false)){const e1=LW+(W-LW)*.28,e2=LW+(W-LW)*.72,on=bs.holding?1:.25;
+    c.fillStyle='rgba(235,225,255,.9)';c.fillRect(e1-9,L.surf-12,18,8);c.fillRect(e2-9,L.surf-12,18,8);
+    c.font='9px Michroma,sans-serif';c.textAlign='center';c.fillStyle='rgba(235,225,255,.8)';c.fillText('+',e1,L.surf-16);c.fillText('−',e2,L.surf-16);c.textAlign='left';
+    for(let i=0;i<4;i++){const dep=24+i*20;c.beginPath();c.moveTo(e1,L.surf);c.bezierCurveTo(e1,L.surf+dep*1.3,e2,L.surf+dep*1.3,e2,L.surf);
+      c.setLineDash([6,8]);c.lineDashOffset=-now/30*(bs.holding?1:.2);c.strokeStyle='rgba(255,190,160,'+((.65-i*.12)*on)+')';c.lineWidth=1.6;c.stroke()}c.setLineDash([])}
+  if(bs.step===4){c.font='600 11px Pretendard,sans-serif';c.textAlign='right';c.fillStyle='rgba(255,240,210,.9)';c.fillText('샷 → 활성화 → 재침투',W-8,H-24);c.textAlign='left'}
+}
+function drawB(now){const dt=Math.min(60,now-bs.t0);bs.t0=now;
+  if(bs.step===2&&bs.holding){bs.rf=Math.min(1,bs.rf+dt/3000);if(navigator.vibrate&&Math.random()<.05)navigator.vibrate(10);if(bs.rf>=1){bs.step=3;bs.holding=false}uiB()}
+  drawFace(now,dt);drawSkin(now,dt);bRAF=requestAnimationFrame(drawB)}
 function startB(){sizeB();resetB();cancelAnimationFrame(bRAF);bRAF=requestAnimationFrame(drawB)}
 function stopB(){cancelAnimationFrame(bRAF)}
 function barRow(lbl,a,b,u){const mx=Math.max(a,b);return '<div class="barrow"><div class="h">'+lbl+'<span>'+u+'</span></div>'+
@@ -729,16 +912,20 @@ $('bDone').onclick=()=>{if(!S.b){S.b=true;save();toast('SHOT 스탬프 획득')}
 $('bAgain').onclick=()=>resetB();
 addEventListener('resize',()=>{if($('s-b').classList.contains('on'))sizeB()});
 
-/* ================= 이벤트 참여권 ================= */
+/* ================= 인형뽑기 참여권 ================= */
 function renderTicket(){
   if(!S.cIssued){S.cIssued=hm();save()}
   $('tCode').textContent=code();$('tType').textContent=S.type+' · '+S.a;$('tTime').textContent=S.date+' '+S.cIssued;
-  $('tUsed').innerHTML=S.c?'<span class="used">사용 완료 · '+S.c+'</span>':'';
-  $('staffBtn').style.display=S.c?'none':'flex';
+  const tot=chancesTotal(),used=S.cUsed||0,left=chancesLeft();
+  $('tLeft').textContent=left+'회';
+  let h='<span class="'+(used>=1?'used':'')+'">기본 찬스<br>1회</span>';
+  h+=S.applied?'<span class="'+(used>=2?'used':'')+'">리포트 신청<br>+1회</span>':'<span class="lock">리포트 신청 시<br>+1회</span>';
+  $('tChances').innerHTML=h;
+  $('staffBtn').style.display=left?'flex':'none';$('staffNote').textContent=left?'직원이 버튼을 2초간 눌러 1회 사용 처리해요.':'오늘의 인형뽑기 찬스를 모두 사용했어요.';
 }
 let holdT=null;const sb=$('staffBtn');
-sb.addEventListener('pointerdown',()=>{sb.textContent='확인 중…';holdT=setTimeout(()=>{S.c=hm();save();toast('참여권 사용 완료');renderTicket()},2000)});
-['pointerup','pointerleave','pointercancel'].forEach(ev=>sb.addEventListener(ev,()=>{clearTimeout(holdT);if(!S.c)sb.textContent='직원 확인 (길게 누르기)'}));
+sb.addEventListener('pointerdown',()=>{if(!chancesLeft())return;sb.textContent='확인 중…';holdT=setTimeout(()=>{S.cUsed=(S.cUsed||0)+1;S.c=hm();save();toast('인형뽑기 1회 사용 완료');sb.textContent='직원 확인 (길게 누르기)';renderTicket();renderFormSlots()},2000)});
+['pointerup','pointerleave','pointercancel'].forEach(ev=>sb.addEventListener(ev,()=>{clearTimeout(holdT);sb.textContent='직원 확인 (길게 누르기)'}));
 sb.addEventListener('contextmenu',e=>e.preventDefault());
 
 /* ================= 내 정복 기록 ================= */
@@ -747,7 +934,8 @@ function renderMe(){
   $('meCode').textContent=S.num?code():'-';
   $('meType').textContent=S.type?S.type+' · '+S.a:'미진행';
   $('meB').textContent=S.b?'정복 완료':'미진행';
-  $('meC').textContent=S.c?'참여 완료':(S.a&&S.b?'참여 가능':'잠김');
+  $('meF').textContent=S.applied?'신청 완료':'미신청';
+  $('meC').textContent=S.a&&S.b?(chancesLeft()?chancesLeft()+'회 남음':'참여 완료'):'잠김';
 }
 $('resetBtn').onclick=()=>{if(confirm('이 휴대폰에 저장된 기록을 지울까요?')){store.clear();S={};$('startLbl').textContent='시작하기';go('intro')}};
 
