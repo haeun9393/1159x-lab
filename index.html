@@ -194,6 +194,16 @@ input[type=file]{display:none}
 .ticket .tp .big{font-family:var(--wide);font-size:26px;letter-spacing:.06em;margin-top:10px;text-shadow:0 0 16px rgba(220,205,255,.7)}
 .ticket .cut{height:0;border-top:1px dashed var(--line);margin:0 18px}
 .ticket .bt{padding:18px 24px}
+.crow{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
+.crow:first-child{border-top:0}
+.crow .no{width:30px;height:30px;flex:none;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--wide);font-size:10px;color:var(--acc)}
+.crow.ok .no{background:rgba(170,140,255,.3);border-color:rgba(225,212,255,.7);color:#fff;box-shadow:0 0 12px rgba(160,130,255,.5)}
+.crow .tx{flex:1;min-width:0}
+.crow .tx b{display:block;font-size:15px}
+.crow .tx span{font-size:12px;color:var(--sub);line-height:1.5}
+.crow .tx a{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:#1A1236;background:#EDE6FF;border-radius:999px;padding:5px 11px;text-decoration:none}
+.crow .vf{flex:none;font-size:11px;font-weight:700;border-radius:999px;padding:7px 10px;border:1px dashed rgba(225,212,255,.5);color:var(--sub);background:none;font-family:inherit;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.crow.ok .vf{border-style:solid;color:var(--acc);border-color:rgba(225,212,255,.6)}
 .chances{display:flex;gap:8px;margin-top:10px}
 .chances span{flex:1;text-align:center;border-radius:14px;padding:12px 6px;border:1px solid rgba(225,212,255,.55);background:rgba(170,140,255,.18);font-size:12px;font-weight:600;line-height:1.4}
 .chances span.used{opacity:.4;text-decoration:line-through;background:none}
@@ -266,6 +276,15 @@ input[type=file]{display:none}
     <div class="qtext" id="qText"></div>
     <div id="qOpts" class="mt12"></div>
     <button class="back mt16" id="qBack">이전</button>
+  </section>
+
+  <section class="screen" id="s-gate">
+    <div class="eyebrow">Scan complete</div>
+    <h2>스캔이 끝났어요.<br>결과를 열기 전에 리포트를 신청하세요</h2>
+    <p class="lead">연구원님의 미래형 피부 타입이 확인됐어요. 정밀 리포트를 신청하면 타입별 관리법과 시크릿 혜택을 3영업일 안에 문자로 보내드려요.</p>
+    <div class="scanner mt24" style="height:150px"><canvas id="gateCv" style="height:150px"></canvas></div>
+    <div class="formslot mt16" data-variant="gate"></div>
+    <button class="skip" id="gateSkip" style="display:block;margin:14px auto 0">결과 먼저 보기</button>
   </section>
 
   <section class="screen" id="s-reveal">
@@ -371,7 +390,7 @@ input[type=file]{display:none}
   <section class="screen" id="s-c">
     <div class="eyebrow">Event lab</div>
     <h2>정품 앰플 인형뽑기 참여권</h2>
-    <p class="lead">C구역 직원에게 이 화면을 보여주세요. 뽑기 안에 정품 앰플이 들어 있고, 참여하면 샘플도 챙겨 드려요.</p>
+    <p class="lead">C구역 직원에게 이 화면을 보여주세요. 뽑기 안에 정품 앰플이 들어 있고, 참여하면 샘플도 챙겨 드려요. 미션을 더 하면 찬스가 늘어나요.</p>
     <div class="ticket mt24">
       <div class="tp"><div class="k">1159X AESTHETIC · CLAW MACHINE</div><div class="big" id="tCode"></div></div>
       <div class="cut"></div>
@@ -379,12 +398,11 @@ input[type=file]{display:none}
         <div class="kv">피부 타입<b id="tType"></b></div>
         <div class="kv">발급<b id="tTime"></b></div>
         <div class="kv">남은 찬스<b id="tLeft"></b></div>
-        <div class="chances" id="tChances"></div>
       </div>
     </div>
+    <div class="card mt12" id="tRows"></div>
     <button class="btn mt24" id="staffBtn">직원 확인 (길게 누르기)</button>
     <p class="note mt8 center" id="staffNote">직원이 버튼을 2초간 눌러 1회 사용 처리해요.</p>
-    <div class="formslot mt16" data-variant="c"></div>
     <button class="btn ghost mt16" data-go="hub">미션 맵으로</button>
   </section>
 
@@ -434,7 +452,7 @@ function code(){return '1159X-'+S.num}
 if(S.c&&typeof S.c==='string'&&S.cUsed==null){S.cUsed=1}
 
 /* 설문 제출 후 돌아온 경우 (?applied=1) */
-(function(){try{const u=new URL(location.href);if(u.searchParams.get('applied')==='1'){if(!S.applied){S.applied=hm();save();setTimeout(()=>toast('리포트 신청 완료 · 인형뽑기 찬스 +1'),600)}u.searchParams.delete('applied');history.replaceState(null,'',u.pathname+(u.search||'')+u.hash)}}catch(e){}})();
+(function(){try{const u=new URL(location.href);if(u.searchParams.get('applied')==='1'){if(!S.applied){S.applied=hm();save();setTimeout(()=>toast('리포트 신청 완료 · 3영업일 안에 문자로 보내드려요'),600)}u.searchParams.delete('applied');history.replaceState(null,'',u.pathname+(u.search||'')+u.hash)}}catch(e){}})();
 
 /* ================= 데이터 ================= */
 const W1159='https://the1159.co.kr/product/';
@@ -492,12 +510,12 @@ function renderFormSlots(){
     const v=el.dataset.variant;
     if(!url||!S.a){el.innerHTML='';return}
     if(S.applied){
-      el.innerHTML=(v==='band'||v==='c')?'':'<div class="formcta done"><div class="ft1">리포트 신청 완료</div><div class="fd">3영업일 안에 정밀 리포트와 시크릿 혜택을 문자로 보내드려요.</div></div>';return}
+      el.innerHTML=(v==='band'||v==='gate')?'':'<div class="formcta done"><div class="ft1">리포트 신청 완료</div><div class="fd">3영업일 안에 정밀 리포트와 시크릿 혜택을 문자로 보내드려요.</div></div>';return}
     const T=S.type;
-    if(v==='main')el.innerHTML='<a class="formcta" href="'+url+'"><span class="b5">'+B5+'</span><div class="ft1">'+T+' 연구원님,<br>정밀 리포트가 준비됐어요</div><div class="fd">3영업일 안에 문자로 보내드려요 · 타입별 관리법 · 맞춤 디바이스·화장품 추천 · 시크릿 특가와 전용 할인 코드</div><div class="fbtn">'+CTA+' →</div><div class="fs">이름·연락처·이메일만 받아요</div></a>';
+    if(v==='gate')el.innerHTML='<a class="formcta" href="'+url+'"><span class="b5">'+B5+'</span><div class="ft1">정밀 피부 리포트 +<br>한정 시크릿 혜택</div><div class="fd">타입별 관리법 · 맞춤 디바이스·화장품 추천 · 시크릿 특가와 전용 할인 코드를 3영업일 안에 문자로</div><div class="fbtn">'+CTA+' →</div><div class="fs">이름·연락처·이메일만 받아요 · 신청 후 바로 결과가 열려요</div></a>';
+    else if(v==='main')el.innerHTML='<a class="formcta" href="'+url+'"><span class="b5">'+B5+'</span><div class="ft1">'+T+' 연구원님,<br>정밀 리포트가 준비됐어요</div><div class="fd">3영업일 안에 문자로 보내드려요 · 타입별 관리법 · 맞춤 디바이스·화장품 추천 · 시크릿 특가와 전용 할인 코드</div><div class="fbtn">'+CTA+' →</div><div class="fs">이름·연락처·이메일만 받아요</div></a>';
     else if(v==='band')el.innerHTML='<a class="formband" href="'+url+'"><span class="b5">5초</span><span>'+CTA+'</span><i>→</i></a>';
     else if(v==='rx')el.innerHTML='<a class="formband" href="'+url+'"><span class="b5">5초</span><span>이 처방전의 풀버전 리포트 + 전용 할인 코드 받기</span><i>→</i></a>';
-    else if(v==='c')el.innerHTML='<a class="formcta" href="'+url+'"><span class="b5">'+B5+'</span><div class="ft1">리포트 신청하면 인형뽑기 찬스 +1</div><div class="fd">신청을 마치고 이 화면으로 돌아오면 찬스가 하나 더 생겨요.</div><div class="fbtn">'+CTA+' →</div></a>';
     else if(v==='me')el.innerHTML='<a class="formband" href="'+url+'"><span class="b5">5초</span><span>정밀 리포트 + '+CTA+'</span><i>→</i></a>';
   });
 }
@@ -590,7 +608,8 @@ $('stGo').onclick=()=>{if(!S.num){S.num=String(Math.floor(1000+Math.random()*900
 $('startBtn').onclick=()=>{if(S.num)go('hub');else{go('story');showStory(0)}};
 
 /* ================= 인형뽑기 찬스 ================= */
-function chancesTotal(){return 1+(S.applied?1:0)}
+const INSTA='https://www.instagram.com/1159.official/';
+function chancesTotal(){return 1+(S.vFollow?1:0)+(S.vPost?1:0)}
 function chancesLeft(){return Math.max(0,chancesTotal()-(S.cUsed||0))}
 
 /* ================= 미션 맵 ================= */
@@ -649,10 +668,21 @@ function stopScan(){cancelAnimationFrame(scanRAF)}
 function finishA(){
   const pairs=[['D','O'],['S','R'],['P','N'],['W','T']];let c='';
   pairs.forEach((p,i)=>{const sl=ans.slice(i*3,i*3+3);c+=sl.filter(x=>x===p[0]).length>=2?p[0]:p[1]});
-  S.a=c;S.type=ftOf(c);if(!S.dev)S.dev=pickDevice();save();showReveal(true);
+  S.a=c;S.type=ftOf(c);if(!S.dev)S.dev=pickDevice();save();
+  if(formURL()&&!S.applied)goGate();else showReveal(true);
 }
+let gateRAF=null;
+function goGate(){go('gate');const cv=$('gateCv'),c=cv.getContext('2d'),d=window.devicePixelRatio||1,W=cv.clientWidth,H=150;cv.width=W*d;cv.height=H*d;c.setTransform(d,0,0,d,0,0);
+  cancelAnimationFrame(gateRAF);(function f(t){c.clearRect(0,0,W,H);
+    for(let i=0;i<3;i++){c.beginPath();c.arc(W/2,H/2,30+i*18+Math.sin(t/500+i)*3,0,6.283);c.setLineDash([3,7]);c.lineDashOffset=-t/30*(i%2?1:-1);c.strokeStyle='rgba(200,185,255,'+(.5-i*.12)+')';c.lineWidth=1.2;c.stroke()}c.setLineDash([]);
+    const g=c.createRadialGradient(W/2-8,H/2-8,2,W/2,H/2,26);g.addColorStop(0,'rgba(240,235,255,.9)');g.addColorStop(1,'rgba(120,100,220,.5)');c.fillStyle=g;c.beginPath();c.arc(W/2,H/2,24,0,6.283);c.fill();
+    c.font='12px Michroma,sans-serif';c.fillStyle='#14102C';c.textAlign='center';c.fillText('?',W/2,H/2+5);
+    c.font='9px Michroma,sans-serif';c.fillStyle='rgba(200,185,255,.75)';c.textAlign='left';c.fillText('TYPE LOCKED',12,18);c.textAlign='right';c.fillText(code(),W-12,18);
+    if($('s-gate').classList.contains('on'))gateRAF=requestAnimationFrame(f)})(0)}
+$('gateSkip').onclick=()=>showReveal(true);
 let rvRAF=null;
 function showReveal(isNew){
+  S.revealed=true;save();
   go('reveal');const T=FT[S.type];
   $('rvName').textContent=S.type;$('rvKo').textContent=T.ko;$('rvDesc').textContent=T.desc;
   $('rvMbti').innerHTML=S.a.split('').map(ch=>'<span>'+ch+'<small>'+AX[ch]+'</small></span>').join('');
@@ -917,14 +947,20 @@ function renderTicket(){
   if(!S.cIssued){S.cIssued=hm();save()}
   $('tCode').textContent=code();$('tType').textContent=S.type+' · '+S.a;$('tTime').textContent=S.date+' '+S.cIssued;
   const tot=chancesTotal(),used=S.cUsed||0,left=chancesLeft();
-  $('tLeft').textContent=left+'회';
-  let h='<span class="'+(used>=1?'used':'')+'">기본 찬스<br>1회</span>';
-  h+=S.applied?'<span class="'+(used>=2?'used':'')+'">리포트 신청<br>+1회</span>':'<span class="lock">리포트 신청 시<br>+1회</span>';
-  $('tChances').innerHTML=h;
-  $('staffBtn').style.display=left?'flex':'none';$('staffNote').textContent=left?'직원이 버튼을 2초간 눌러 1회 사용 처리해요.':'오늘의 인형뽑기 찬스를 모두 사용했어요.';
+  $('tLeft').textContent=left+'회 (사용 '+used+' / 총 '+tot+')';
+  $('tRows').innerHTML=
+   '<div class="crow ok"><div class="no">01</div><div class="tx"><b>기본 찬스 1회</b><span>미션을 완료한 연구원 모두에게 드려요.</span></div><span class="vf">지급됨</span></div>'+
+   '<div class="crow'+(S.vFollow?' ok':'')+'"><div class="no">02</div><div class="tx"><b>인스타그램 팔로우 +1회</b><span>일일오구 공식 계정 @1159.official을 팔로우해 주세요.</span>'+(S.vFollow?'':'<br><a href="'+INSTA+'" target="_blank" rel="noopener">팔로우하러 가기</a>')+'</div><button class="vf" data-verify="vFollow">'+(S.vFollow?'확인됨':'직원 확인')+'</button></div>'+
+   '<div class="crow'+(S.vPost?' ok':'')+'"><div class="no">03</div><div class="tx"><b>게시물·스토리 업로드 +1회</b><span>연구원 ID 카드나 피부 타입 결과를 인스타그램 게시물 또는 스토리로 올려 주세요.</span>'+(S.vPost?'':'<br><a href="#" data-go="id">ID 카드 공유하기</a>')+'</div><button class="vf" data-verify="vPost">'+(S.vPost?'확인됨':'직원 확인')+'</button></div>'+
+   '<p class="note" style="margin-top:6px">02·03번은 직원이 팔로우·업로드를 확인한 뒤 \'직원 확인\'을 2초간 눌러 추가해요.</p>';
+  $('tRows').querySelectorAll('[data-verify]').forEach(bt=>{const k=bt.dataset.verify;if(S[k])return;let t=null;
+    bt.addEventListener('pointerdown',()=>{bt.textContent='확인 중…';t=setTimeout(()=>{S[k]=hm();save();toast('찬스 +1 추가됐어요');renderTicket()},2000)});
+    ['pointerup','pointerleave','pointercancel'].forEach(ev=>bt.addEventListener(ev,()=>{clearTimeout(t);if(!S[k])bt.textContent='직원 확인'}));
+    bt.addEventListener('contextmenu',e=>e.preventDefault())});
+  $('staffBtn').style.display=left?'flex':'none';$('staffNote').textContent=left?'직원이 버튼을 2초간 눌러 1회 사용 처리해요.':(tot<3?'남은 미션을 하면 찬스가 더 생겨요.':'오늘의 인형뽑기 찬스를 모두 사용했어요.');
 }
 let holdT=null;const sb=$('staffBtn');
-sb.addEventListener('pointerdown',()=>{if(!chancesLeft())return;sb.textContent='확인 중…';holdT=setTimeout(()=>{S.cUsed=(S.cUsed||0)+1;S.c=hm();save();toast('인형뽑기 1회 사용 완료');sb.textContent='직원 확인 (길게 누르기)';renderTicket();renderFormSlots()},2000)});
+sb.addEventListener('pointerdown',()=>{if(!chancesLeft())return;sb.textContent='확인 중…';holdT=setTimeout(()=>{S.cUsed=(S.cUsed||0)+1;S.c=hm();save();toast('인형뽑기 1회 사용 완료');sb.textContent='직원 확인 (길게 누르기)';renderTicket()},2000)});
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>sb.addEventListener(ev,()=>{clearTimeout(holdT);sb.textContent='직원 확인 (길게 누르기)'}));
 sb.addEventListener('contextmenu',e=>e.preventDefault());
 
@@ -940,7 +976,7 @@ function renderMe(){
 $('resetBtn').onclick=()=>{if(confirm('이 휴대폰에 저장된 기록을 지울까요?')){store.clear();S={};$('startLbl').textContent='시작하기';go('intro')}};
 
 if(S.num)$('startLbl').textContent='미션 맵으로';
-go('intro');
+if(S.a&&S.applied&&!S.revealed)showReveal(true);else go('intro');
 </script>
 </body>
 </html>
