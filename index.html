@@ -212,6 +212,9 @@ input[type=file]{display:none}
 .kv b{color:var(--ink);font-weight:600;text-align:right}
 .link{display:flex;justify-content:space-between;align-items:center;padding:17px 0;border-top:1px solid var(--line);font-size:15px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer}
 .link span{color:var(--mute);font-weight:500;font-size:13px}
+.adm textarea{width:100%;min-height:180px;border-radius:16px;border:1px solid var(--line);background:rgba(20,14,45,.6);color:var(--ink);font:13px/1.6 ui-monospace,Menlo,monospace;padding:12px}
+.agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.agrid figure{margin:0}.agrid img{width:100%;border-radius:10px;border:1px solid var(--line);display:block}.agrid figcaption{font-size:10px;color:var(--sub);margin-top:4px;text-align:center;word-break:break-all}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:rgba(40,28,90,.92);border:1px solid rgba(220,205,255,.5);box-shadow:0 0 20px rgba(160,130,255,.45);color:#fff;font-size:14px;font-weight:600;padding:12px 20px;border-radius:999px;opacity:0;transition:all .3s;pointer-events:none;z-index:9;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
@@ -406,6 +409,30 @@ input[type=file]{display:none}
     <button class="btn ghost mt16" data-go="hub">미션 맵으로</button>
   </section>
 
+  <section class="screen" id="s-card">
+    <div class="eyebrow">Researcher ID</div>
+    <h2 id="cardTitle">연구원 ID 카드</h2>
+    <p class="lead">1159X AESTHETIC 미래 피부 연구소에서 발급된 카드예요. 저장해서 인스타그램 스토리에 올려보세요.</p>
+    <img class="preview mt16" id="cardImg" alt="연구원 ID 카드">
+    <div class="row2 mt16">
+      <button class="btn sm ghost" id="cardSave">이미지 저장</button>
+      <button class="btn sm" id="cardShare">스토리 공유</button>
+    </div>
+    <p class="note mt8 center">저장이 안 되면 카드 이미지를 길게 눌러 사진으로 저장하세요.</p>
+    <a class="special" id="cardSpecial" target="_blank" rel="noopener"><div class="k">1159X RESEARCHER ONLY</div><div class="t">팝업 한정 시크릿 특가</div><div class="d">연구원 전용 쿠폰을 받고 특가로 만나보세요.</div><span class="g">쿠폰 받기 →</span></a>
+    <a class="btn ghost mt16" href="./">1159X 연구소 들어가기</a>
+  </section>
+
+  <section class="screen adm" id="s-admin">
+    <div class="eyebrow">Internal tool</div>
+    <h2>연구원 카드 일괄 생성 (내부용)</h2>
+    <p class="lead">설문 응답 시트에서 연구원 코드, 피부 MBTI, 날짜 열을 복사해 붙여넣으세요. 한 줄에 한 명이에요. 붙여넣은 내용은 이 브라우저 안에서만 쓰이고 어디에도 저장되지 않아요.</p>
+    <textarea class="mt16" id="admIn" placeholder="1159X-1234	DSNW	2026.11.22"></textarea>
+    <div class="row2 mt12"><button class="btn sm ghost" id="admMake">카드 만들기</button><button class="btn sm" id="admZip">JPG 전체 다운로드</button></div>
+    <p class="note mt8" id="admStat"></p>
+    <div class="agrid" id="admGrid"></div>
+  </section>
+
   <section class="screen" id="s-me">
     <div class="eyebrow">My lab record</div>
     <h2 id="meTitle"></h2>
@@ -435,8 +462,14 @@ input[type=file]{display:none}
 const CONFIG={
   FORM_URL:'',   /* 구글 설문 링크 (예: https://docs.google.com/forms/d/e/XXXX/viewform) — 비어 있으면 설문 버튼 숨김 */
   ENTRY:{code:'',mbti:'',type:'',device:''},   /* 미리 채울 칸의 entry 번호 (예: 'entry.123456789') */
-  SPECIAL_URL:'https://the1159.co.kr/surl/P/61'
+  SPECIAL_URL:'https://the1159.co.kr/surl/P/61',
+  GA_ID:''   /* 구글 애널리틱스 측정 ID (예: G-XXXXXXXXXX) — 비어 있으면 집계 안 함 */
 };
+/* 방문 집계 (Google Analytics 4) */
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments)}
+if(CONFIG.GA_ID){const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+CONFIG.GA_ID;document.head.appendChild(s);gtag('js',new Date());gtag('config',CONFIG.GA_ID)}
+function track(n,p){try{if(CONFIG.GA_ID)gtag('event',n,p||{})}catch(e){}}
 
 const $=id=>document.getElementById(id);
 const store={get(){try{return JSON.parse(localStorage.getItem('lab1159x_v2')||'null')}catch(e){return null}},set(v){try{localStorage.setItem('lab1159x_v2',JSON.stringify(v))}catch(e){}},clear(){try{localStorage.removeItem('lab1159x_v2')}catch(e){}}};
@@ -452,7 +485,7 @@ function code(){return '1159X-'+S.num}
 if(S.c&&typeof S.c==='string'&&S.cUsed==null){S.cUsed=1}
 
 /* 설문 제출 후 돌아온 경우 (?applied=1) */
-(function(){try{const u=new URL(location.href);if(u.searchParams.get('applied')==='1'){if(!S.applied){S.applied=hm();save();setTimeout(()=>toast('리포트 신청 완료 · 3영업일 안에 문자로 보내드려요'),600)}u.searchParams.delete('applied');history.replaceState(null,'',u.pathname+(u.search||'')+u.hash)}}catch(e){}})();
+(function(){try{const u=new URL(location.href);if(u.searchParams.get('applied')==='1'){if(!S.applied){S.applied=hm();save();track('form_submitted');setTimeout(()=>toast('리포트 신청 완료 · 3영업일 안에 문자로 보내드려요'),600)}u.searchParams.delete('applied');history.replaceState(null,'',u.pathname+(u.search||'')+u.hash)}}catch(e){}})();
 
 /* ================= 데이터 ================= */
 const W1159='https://the1159.co.kr/product/';
@@ -572,7 +605,7 @@ function go(name){
   renderFormSlots();
   if(name==='b')startB();else stopB();
   if(name==='a')startScan();else stopScan();
-  $('topBar').style.display=['intro','story'].includes(name)?'none':'flex';
+  $('topBar').style.display=['intro','story','admin'].includes(name)?'none':'flex';
   $('topId').textContent=S.num?code():'';
 }
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();go(g.dataset.go)}});
@@ -605,7 +638,7 @@ $('stGo').onclick=()=>{if(!S.num){S.num=String(Math.floor(1000+Math.random()*900
   for(let i=0;i<3;i++){c.beginPath();c.ellipse(150,150,60+i*30+Math.sin(t/600+i)*4,(60+i*30)*.35,-.4,0,6.283);c.strokeStyle='rgba(220,205,255,'+(.5-i*.13)+')';c.lineWidth=1.5;c.stroke()}
   c.save();c.shadowColor='#fff';c.shadowBlur=24;sparkPath(c,150,150,46+Math.sin(t/300)*4);c.fillStyle='#F6F2FF';c.fill();c.restore()}
   requestAnimationFrame(f)})(0)})();
-$('startBtn').onclick=()=>{if(S.num)go('hub');else{go('story');showStory(0)}};
+$('startBtn').onclick=()=>{if(S.num)go('hub');else{track('mission_start');go('story');showStory(0)}};
 
 /* ================= 인형뽑기 찬스 ================= */
 const INSTA='https://www.instagram.com/1159.official/';
@@ -668,7 +701,7 @@ function stopScan(){cancelAnimationFrame(scanRAF)}
 function finishA(){
   const pairs=[['D','O'],['S','R'],['P','N'],['W','T']];let c='';
   pairs.forEach((p,i)=>{const sl=ans.slice(i*3,i*3+3);c+=sl.filter(x=>x===p[0]).length>=2?p[0]:p[1]});
-  S.a=c;S.type=ftOf(c);if(!S.dev)S.dev=pickDevice();save();
+  S.a=c;S.type=ftOf(c);if(!S.dev)S.dev=pickDevice();save();track('scan_complete',{skin_type:S.type,device:S.dev});
   if(formURL()&&!S.applied)goGate();else showReveal(true);
 }
 let gateRAF=null;
@@ -701,27 +734,28 @@ function showReveal(isNew){
 $('rvGo').onclick=()=>go('id');
 
 /* ================= 연구원 ID 카드 ================= */
-async function makeIDCard(){
-  await loadFonts();const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');const T=FT[S.type];
-  spaceBg(c,W,H,+S.num);
+async function makeIDCard(o){
+  o=o||{num:S.num,a:S.a,type:S.type,date:S.date};
+  await loadFonts();const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');const T=FT[o.type];
+  spaceBg(c,W,H,+o.num);
   hudCorners(c,60,60,W-120,H-120,60,'rgba(225,212,255,.6)');
   txt(c,'1159X AESTHETIC',W/2,170,'44px Michroma, sans-serif','#F4EEFF','center',8);
   txt(c,'FUTURE BEAUTY LAB · RESEARCHER ID',W/2,228,'20px Michroma, sans-serif','rgba(200,185,255,.8)','center',6);
   c.save();c.translate(W/2,640);c.strokeStyle='rgba(225,212,255,.25)';c.lineWidth=2;c.setLineDash([6,12]);c.beginPath();c.arc(0,0,330,0,6.283);c.stroke();c.setLineDash([]);
   c.beginPath();c.ellipse(0,0,420,110,-.35,0,6.283);c.strokeStyle='rgba(225,212,255,.2)';c.stroke();c.restore();
-  drawPlanet(c,S.type,W/2,640,230,1200);
+  drawPlanet(c,o.type,W/2,640,230,1200);
   txt(c,'SKIN TYPE',W/2,1050,'22px Michroma, sans-serif','rgba(200,185,255,.8)','center',10);
-  c.save();c.shadowColor=T.color;c.shadowBlur=40;txt(c,S.type,W/2,1170,'112px Michroma, sans-serif','#FFFFFF','center',12);c.restore();
+  c.save();c.shadowColor=T.color;c.shadowBlur=40;txt(c,o.type,W/2,1170,'112px Michroma, sans-serif','#FFFFFF','center',12);c.restore();
   txt(c,T.ko,W/2,1240,'700 38px Pretendard',T.color,'center');
   const line=y=>{c.strokeStyle='rgba(225,212,255,.25)';c.lineWidth=2;c.beginPath();c.moveTo(120,y);c.lineTo(W-120,y);c.stroke()};
   line(1310);
   txt(c,'RESEARCHER CODE',120,1375,'20px Michroma, sans-serif','rgba(200,185,255,.75)','left',6);
-  txt(c,code(),120,1455,'60px Michroma, sans-serif','#FFFFFF','left',4);
+  txt(c,'1159X-'+o.num,120,1455,'60px Michroma, sans-serif','#FFFFFF','left',4);
   txt(c,'SKIN MBTI',W-120,1375,'20px Michroma, sans-serif','rgba(200,185,255,.75)','right',6);
-  txt(c,S.a,W-120,1455,'60px Michroma, sans-serif',T.color,'right',4);
+  txt(c,o.a,W-120,1455,'60px Michroma, sans-serif',T.color,'right',4);
   line(1500);
   txt(c,COORD,120,1565,'24px Michroma, sans-serif','rgba(230,222,255,.9)','left',3);
-  txt(c,PLACE+' · '+S.date,120,1610,'20px Michroma, sans-serif','rgba(200,185,255,.65)','left',4);
+  txt(c,PLACE+' · '+o.date,120,1610,'20px Michroma, sans-serif','rgba(200,185,255,.65)','left',4);
   txt(c,'"오늘... 꼭 피부를 정복할거야."',W/2,1730,'500 40px Pretendard','#F4EEFF','center');
   c.save();c.shadowColor='#C9B8FF';c.shadowBlur=24;txt(c,'CONQUER, SHOT.',W/2,1800,'30px Michroma, sans-serif','#E6DEFF','center',10);c.restore();
   c.save();c.shadowColor='#fff';c.shadowBlur=20;sparkPath(c,W/2,1310,20);c.fillStyle='#F6F2FF';c.fill();c.restore();
@@ -737,7 +771,7 @@ async function shareOrSave(blob,name,shareFirst){
   toast(shareFirst?'저장했어요. 인스타 스토리에서 올려주세요':'이미지를 저장했어요');
 }
 $('idSave').onclick=()=>shareOrSave(idBlob,code()+'_ID.png',false);
-$('idShare').onclick=()=>shareOrSave(idBlob,code()+'_ID.png',true);
+$('idShare').onclick=()=>{track('share',{what:'id_card'});shareOrSave(idBlob,code()+'_ID.png',true)};
 
 /* ================= 처방전 ================= */
 function imgFail(el){const list=JSON.parse(el.dataset.srcs);const i=+el.dataset.i+1;if(i<list.length){el.dataset.i=i;el.src=list[i]}else{const ph=document.createElement('div');ph.className='ph';ph.textContent=el.dataset.label;el.replaceWith(ph)}}
@@ -787,7 +821,7 @@ async function buildPhoto(){
   phBlob=null;cv.toBlob(b=>phBlob=b,'image/png');$('phActions').style.display='block';$('phLibBtn').style.display='none';
 }
 $('phSave').onclick=()=>shareOrSave(phBlob,code()+'_PHOTO.png',false);
-$('phShare').onclick=()=>shareOrSave(phBlob,code()+'_PHOTO.png',true);
+$('phShare').onclick=()=>{track('share',{what:'photo_card'});shareOrSave(phBlob,code()+'_PHOTO.png',true)};
 
 /* ================= 정복, 샷 : SHOT → RF → EP (얼굴 + 피부 단면) ================= */
 /* [확인 필요] 실제 음성 안내 7부위 */
@@ -938,7 +972,7 @@ function finishB(){
   requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll('#bars i').forEach(i=>i.style.width=i.dataset.w+'%')));
   $('bDone').textContent=S.b?'미션 맵으로':'정복 완료 스탬프 받기';
 }
-$('bDone').onclick=()=>{if(!S.b){S.b=true;save();toast('SHOT 스탬프 획득')}go('hub')};
+$('bDone').onclick=()=>{if(!S.b){S.b=true;save();track('shot_complete');toast('SHOT 스탬프 획득')}go('hub')};
 $('bAgain').onclick=()=>resetB();
 addEventListener('resize',()=>{if($('s-b').classList.contains('on'))sizeB()});
 
@@ -954,13 +988,13 @@ function renderTicket(){
    '<div class="crow'+(S.vPost?' ok':'')+'"><div class="no">03</div><div class="tx"><b>게시물·스토리 업로드 +1회</b><span>연구원 ID 카드나 피부 타입 결과를 인스타그램 게시물 또는 스토리로 올려 주세요.</span>'+(S.vPost?'':'<br><a href="#" data-go="id">ID 카드 공유하기</a>')+'</div><button class="vf" data-verify="vPost">'+(S.vPost?'확인됨':'직원 확인')+'</button></div>'+
    '<p class="note" style="margin-top:6px">02·03번은 직원이 팔로우·업로드를 확인한 뒤 \'직원 확인\'을 2초간 눌러 추가해요.</p>';
   $('tRows').querySelectorAll('[data-verify]').forEach(bt=>{const k=bt.dataset.verify;if(S[k])return;let t=null;
-    bt.addEventListener('pointerdown',()=>{bt.textContent='확인 중…';t=setTimeout(()=>{S[k]=hm();save();toast('찬스 +1 추가됐어요');renderTicket()},2000)});
+    bt.addEventListener('pointerdown',()=>{bt.textContent='확인 중…';t=setTimeout(()=>{S[k]=hm();save();track('chance_add',{kind:k});toast('찬스 +1 추가됐어요');renderTicket()},2000)});
     ['pointerup','pointerleave','pointercancel'].forEach(ev=>bt.addEventListener(ev,()=>{clearTimeout(t);if(!S[k])bt.textContent='직원 확인'}));
     bt.addEventListener('contextmenu',e=>e.preventDefault())});
   $('staffBtn').style.display=left?'flex':'none';$('staffNote').textContent=left?'직원이 버튼을 2초간 눌러 1회 사용 처리해요.':(tot<3?'남은 미션을 하면 찬스가 더 생겨요.':'오늘의 인형뽑기 찬스를 모두 사용했어요.');
 }
 let holdT=null;const sb=$('staffBtn');
-sb.addEventListener('pointerdown',()=>{if(!chancesLeft())return;sb.textContent='확인 중…';holdT=setTimeout(()=>{S.cUsed=(S.cUsed||0)+1;S.c=hm();save();toast('인형뽑기 1회 사용 완료');sb.textContent='직원 확인 (길게 누르기)';renderTicket()},2000)});
+sb.addEventListener('pointerdown',()=>{if(!chancesLeft())return;sb.textContent='확인 중…';holdT=setTimeout(()=>{S.cUsed=(S.cUsed||0)+1;S.c=hm();save();track('chance_used');toast('인형뽑기 1회 사용 완료');sb.textContent='직원 확인 (길게 누르기)';renderTicket()},2000)});
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>sb.addEventListener(ev,()=>{clearTimeout(holdT);sb.textContent='직원 확인 (길게 누르기)'}));
 sb.addEventListener('contextmenu',e=>e.preventDefault());
 
@@ -975,8 +1009,56 @@ function renderMe(){
 }
 $('resetBtn').onclick=()=>{if(confirm('이 휴대폰에 저장된 기록을 지울까요?')){store.clear();S={};$('startLbl').textContent='시작하기';go('intro')}};
 
-if(S.num)$('startLbl').textContent='미션 맵으로';
-if(S.a&&S.applied&&!S.revealed)showReveal(true);else go('intro');
+/* ================= 연구원 카드 링크 (?card=1159X-1234&m=DSNW&d=2026.11.22) ================= */
+const RE_CODE=/^1159X-(\d{4})$/i,RE_MBTI=/^[DO][SR][PN][WT]$/i;
+function normDate(s){if(!s)return '';const m=String(s).match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);return m?m[1]+'.'+m[2].padStart(2,'0')+'.'+m[3].padStart(2,'0'):''}
+function todayStr(){const d=new Date();return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')}
+let cardBlob=null,cardName='';
+async function openCardLink(cd,mb,dt){
+  const m=String(cd).trim().match(RE_CODE);mb=String(mb||'').trim().toUpperCase();
+  if(!m||!RE_MBTI.test(mb)){go('intro');toast('카드 정보를 확인할 수 없어요');return}
+  const o={num:m[1],a:mb,type:ftOf(mb),date:normDate(dt)||todayStr()};
+  go('card');$('topId').textContent='1159X-'+o.num;document.documentElement.style.setProperty('--tc',FT[o.type].color);
+  $('cardTitle').textContent='1159X-'+o.num+' · '+o.type;$('cardSpecial').href=CONFIG.SPECIAL_URL;
+  const cv=await makeIDCard(o);$('cardImg').src=cv.toDataURL('image/png');cardName='1159X-'+o.num+'_ID.png';cv.toBlob(b=>cardBlob=b,'image/png');
+  track('card_link_view',{skin_type:o.type});
+}
+$('cardSave').onclick=()=>shareOrSave(cardBlob,cardName,false);
+$('cardShare').onclick=()=>{track('share',{what:'card_link'});shareOrSave(cardBlob,cardName,true)};
+
+/* ================= 내부용: 연구원 카드 일괄 생성 (?admin=cards) ================= */
+let admCards=[];
+function parseRows(t){return t.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>{const cells=l.split(/\t|,/).map(x=>x.trim());
+  const cd=cells.find(x=>RE_CODE.test(x)),mb=cells.find(x=>RE_MBTI.test(x)),dt=cells.map(normDate).find(Boolean);
+  return cd&&mb?{num:cd.match(RE_CODE)[1],a:mb.toUpperCase(),type:ftOf(mb.toUpperCase()),date:dt||todayStr()}:{bad:l}})}
+$('admMake').onclick=async()=>{
+  const rows=parseRows($('admIn').value);admCards=[];$('admGrid').innerHTML='';const bad=rows.filter(r=>r.bad);
+  const ok=rows.filter(r=>!r.bad);$('admStat').textContent=ok.length+'명 생성 중…';
+  for(const o of ok){const cv=await makeIDCard(o);const blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',.92));const name='1159X-'+o.num+'.jpg';admCards.push({name,blob});
+    const f=document.createElement('figure');f.innerHTML='<img alt="'+name+'"><figcaption>'+name+'</figcaption>';f.querySelector('img').src=URL.createObjectURL(blob);$('admGrid').appendChild(f)}
+  $('admStat').textContent=ok.length+'명 생성 완료'+(bad.length?' · 인식 못 한 줄 '+bad.length+'개: '+bad.map(b=>b.bad).slice(0,3).join(' / '):'');
+};
+function loadZip(){return window.JSZip?Promise.resolve():new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+$('admZip').onclick=async()=>{
+  if(!admCards.length){toast('먼저 카드를 만들어 주세요');return}
+  if(admCards.length===1){const a=document.createElement('a');a.href=URL.createObjectURL(admCards[0].blob);a.download=admCards[0].name;a.click();return}
+  try{await loadZip();const z=new JSZip();admCards.forEach(c=>z.file(c.name,c.blob));const blob=await z.generateAsync({type:'blob'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='1159X_cards_'+todayStr()+'.zip';document.body.appendChild(a);a.click();a.remove()}
+  catch(e){toast('ZIP을 만들지 못했어요. 이미지를 하나씩 길게 눌러 저장해 주세요')}
+};
+
+/* ================= 집계 이벤트 ================= */
+document.addEventListener('click',e=>{const f=e.target.closest('.formcta[href],.formband');if(f)track('form_click',{place:(f.closest('.formslot')||{}).dataset?.variant||''});
+  if(e.target.closest('.special'))track('special_click');if(e.target.closest('a[href*="instagram.com"]'))track('insta_click')},true);
+
+/* ================= 시작 ================= */
+(function route(){const q=new URLSearchParams(location.search);
+  if(q.get('card')){openCardLink(q.get('card'),q.get('m'),q.get('d'));return}
+  if(q.get('admin')==='cards'){go('admin');return}
+  if(S.num)$('startLbl').textContent='미션 맵으로';
+  if(S.a&&S.applied&&!S.revealed)showReveal(true);else go('intro');
+  track('app_open',{returning:S.num?'yes':'no'});
+})();
 </script>
 </body>
 </html>
