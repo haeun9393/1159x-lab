@@ -10,7 +10,7 @@
   ▶ 설문 연결: 아래 스크립트의 CONFIG.FORM_URL 에 구글 설문 링크를 넣으면 설문 버튼들이 나타납니다.
      비어 있으면 설문 버튼은 숨겨집니다.
      구글 설문 '미리 채워진 링크 가져오기'로 연구원 코드/피부 MBTI/타입/추천 디바이스 칸의 entry 번호를 확인해 CONFIG.ENTRY 에 넣어 주세요.
-     설문 제출 후 확인 메시지에 https://lab.the1159.co.kr/?applied=1 링크를 넣으면 앱에 '신청 완료'와 인형뽑기 +1이 반영됩니다.
+     설문 제출 후 확인 메시지의 https://lab.the1159.co.kr/?applied=1 링크로 돌아오면 앱에 '신청 완료'가 표시되고 결과가 열립니다. (리포트 신청은 인형뽑기 찬스와 무관)
   오픈 중 확인 필요:
   1) SHOT 7개 포인트 위치 = 실제 음성 안내 부위
   2) 인체적용시험 수치/문구 = 내부 심의 기준
@@ -750,9 +750,9 @@ async function makeIDCard(o){
   const line=y=>{c.strokeStyle='rgba(225,212,255,.25)';c.lineWidth=2;c.beginPath();c.moveTo(120,y);c.lineTo(W-120,y);c.stroke()};
   line(1310);
   txt(c,'RESEARCHER CODE',120,1375,'20px Michroma, sans-serif','rgba(200,185,255,.75)','left',6);
-  txt(c,'1159X-'+o.num,120,1455,'60px Michroma, sans-serif','#FFFFFF','left',4);
+  txt(c,'1159X-'+o.num,120,1452,'48px Michroma, sans-serif','#FFFFFF','left',4);
   txt(c,'SKIN MBTI',W-120,1375,'20px Michroma, sans-serif','rgba(200,185,255,.75)','right',6);
-  txt(c,o.a,W-120,1455,'60px Michroma, sans-serif',T.color,'right',4);
+  txt(c,o.a,W-120,1452,'48px Michroma, sans-serif',T.color,'right',4);
   line(1500);
   txt(c,COORD,120,1565,'24px Michroma, sans-serif','rgba(230,222,255,.9)','left',3);
   txt(c,PLACE+' · '+o.date,120,1610,'20px Michroma, sans-serif','rgba(200,185,255,.65)','left',4);
